@@ -1,0 +1,442 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Welcome to PeleC’s documentation! &mdash; PeleC 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introduction" href="Introduction.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home" alt="Documentation Home"> PeleC
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Equations.html">Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Algorithms.html">Numerical Treatment and Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BoundaryConditions.html">Boundary Conditions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geometry/EB.html">Geometry treatment in PeleC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LES.html">LES and Hybrid LES/DNS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VandV.html">Correctness - Verification and Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PelePhysics.html">PelePhysics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="miscellaneous/miscellaneous.html">Miscellaneous Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boxlib_bits.html">Development Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">PeleC</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Welcome to PeleC’s documentation!</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="welcome-to-pelec-s-documentation">
+<h1>Welcome to PeleC’s documentation!<a class="headerlink" href="#welcome-to-pelec-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Introduction.html#the-pele-project">The Pele Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Introduction.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Introduction.html#development">Development</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Equations.html">Equations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Equations.html#conservative-system">Conservative system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Equations.html#primitive-forms">Primitive Forms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Equations.html#source-terms">Source Terms</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Algorithms.html">Numerical Treatment and Algorithms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Algorithms.html#pelec-time-stepping">PeleC Time-stepping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Algorithms.html#hyperbolics">Hyperbolics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Algorithms.html#diffusion">Diffusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Algorithms.html#reaction">Reaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Algorithms.html#equation-of-state">Equation of State</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="GettingStarted.html#navigation">Navigation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GettingStarted.html#building">Building</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GettingStarted.html#input-files-and-controls">Input Files and Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GettingStarted.html#tutorials">Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GettingStarted.html#testing-and-verification">Testing and Verification</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="BoundaryConditions.html">Boundary Conditions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geometry/EB.html">Geometry treatment in PeleC</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="geometry/EB.html#embedded-boundary-representation">Embedded Boundary Representation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry/EB.html#hybrid-divergence-and-redistribution">Hybrid Divergence and Redistribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry/EB.html#re-redistribution">Re-redistribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry/EB.html#date-structures-and-utility-functions">Date Structures and utility functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry/EB.html#geometry-initialization">Geometry initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry/EB.html#basic-work-iterator-for-for-eb-geometry">Basic work iterator for for EB geometry</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="LES.html">LES and Hybrid LES/DNS Support</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="LES.html#models-for-large-eddy-simulations">Models for large eddy simulations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LES.html#explicit-filtering-of-the-hydrodynamic-source-terms">Explicit filtering of the hydrodynamic source terms</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="VandV.html">Correctness - Verification and Validation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="VandV.html#verification-of-pelec">Verification of PeleC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="VandV.html#verification-of-eb-pelec">Verification of EB PeleC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="VandV.html#validation-of-pelec">Validation of PeleC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="PelePhysics.html">PelePhysics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="PelePhysics.html#fuego">FUEGO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PelePhysics.html#equation-of-state">Equation of State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PelePhysics.html#transport">Transport</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PelePhysics.html#chemistry">Chemistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PelePhysics.html#usage">Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="miscellaneous/miscellaneous.html">Miscellaneous Information</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="miscellaneous/miscellaneous.html#using-kgen">Using KGen</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="boxlib_bits.html">Development Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="boxlib_bits.html#function-listing-for-pelec">Function Listing for PeleC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="boxlib_bits.html#amrex-functions-useful-for-pele-development">AMReX functions useful for Pele development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="boxlib_bits.html#contributing-to-pelec">Contributing to PeleC</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="readme">
+<h1>README<a class="headerlink" href="#readme" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="pelec">
+<span id="id1"></span><h2>PeleC<a class="headerlink" href="#pelec" title="Permalink to this headline">¶</a></h2>
+<p><em>A compressible AMR combustion code</em></p>
+<p><cite>PeleC</cite> is an adaptive-mesh compressible hydrodynamics code for reacting
+flows.</p>
+<div class="section" id="a-note-on-the-current-status-of-pelec-development">
+<h3>A Note on the Current Status of PeleC Development<a class="headerlink" href="#a-note-on-the-current-status-of-pelec-development" title="Permalink to this headline">¶</a></h3>
+<p>Please be aware that kernels previously written in Fortran in PeleC have been recently ported to C++ to allow for execution on GPUs. These new kernels are located in directories marked <code class="docutils literal notranslate"><span class="pre">*Cpp</span></code>. The Fortran kernels are currently preserved in this repo using the original directory organization, as all functionality has not yet been ported to C++ and GPUs. However, development in Fortran will not continue and any future development should be done entirely in C++ and with the ability to execute the code within AMReX’s GPU framework. The Fortran kernels will be phased out at a future date. This is done in order to run portably using CPUS, CUDA, HIP, and DPC++ programming model backends in the future.</p>
+</div>
+<div class="section" id="getting-started">
+<h3>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>To compile and run the <cite>Pele</cite> suite of codes, one needs a C++ compiler that supports the C++14 standard.  A hierarchical strategy for parallelism is supported, based MPI + OpenMP, or MPI + CUDA.  The codes work with all major MPI and OpenMP implementations.  The codes should build and run with no modifications to the <cite>make</cite> system if using a Linux system with the GNU compilers, version 4.9.4 and above.</p></li>
+</ul>
+<p>To build <cite>PeleC</cite> and run a sample 3D flame problem:</p>
+<ol class="arabic">
+<li><p>One can have PeleC use the default submodules for AMReX and PelePhysics in its own repo by simply performing:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="o">--</span><span class="n">recursive</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">AMReX</span><span class="o">-</span><span class="n">Combustion</span><span class="o">/</span><span class="n">PeleC</span><span class="o">.</span><span class="n">git</span>
+<span class="n">cd</span> <span class="n">PeleC</span><span class="o">/</span><span class="n">ExecCpp</span><span class="o">/</span><span class="n">RegTests</span><span class="o">/</span><span class="n">PMF</span>
+<span class="n">make</span>
+<span class="o">./</span><span class="n">Pele3d</span><span class="o">.</span><span class="n">xxx</span><span class="p">,</span><span class="n">yyy</span><span class="o">.</span><span class="n">ex</span> <span class="n">inputs_ex</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Alternatively, one can set environment variables to use AMReX and PelePhysics repos from external locations:</p>
+<ol class="arabic">
+<li><p>Set the environment variable, AMREX_HOME, and clone a copy of <cite>AMReX</cite> there:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>export AMREX_HOME=&lt;location for AMReX&gt;
+git clone git@github.com:AMReX-Codes/amrex.git ${AMREX_HOME}
+</pre></div>
+</div>
+</li>
+<li><p>Set the environment variable, PELE_PHYSICS_HOME, and clone a copy of <cite>PelePhysics</cite> there. You should be placed in the <cite>development</cite> branch:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>export PELE_PHYSICS_HOME=&lt;location for PelePhysics&gt;
+git clone git@github.com:AMReX-Combustion/PelePhysics.git ${PELE_PHYSICS_HOME}
+</pre></div>
+</div>
+</li>
+<li><p>Set the environment variable, PELEC_HOME, and clone a copy of <cite>PeleC</cite> there. You should be placed in the <cite>development</cite> branch:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>export PELEC_HOME=&lt;location for PeleC&gt;
+git clone git@github.com:AMReX-Combustion/PeleC.git ${PELEC_HOME}
+</pre></div>
+</div>
+</li>
+<li><p>Move to an example build folder, build an executable, run a test case:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cd ${PELEC_HOME}/ExecCpp/RegTests/PMF
+make
+./Pele3d.xxx,yyy.ex inputs_ex
+</pre></div>
+</div>
+</li>
+</ol>
+<ul>
+<li><p>Notes</p>
+<blockquote>
+<div><ol class="upperalpha simple">
+<li><p>In the exec line above, xxx.yyy is a tag identifying your compiler and various build options, and will vary across pltaform.  (Note that GNU compilers must be at least 4.8.4, and MPI should be at least version 3).</p></li>
+<li><p>The example is 3D premixed flame, flowing vertically upward through the domain with no gravity. The lateral boundaries are periodic.  A detailed hydrogen model is used.  The solution is initialized with a wrinkled (perturbed) 2D steady flame solution computed using the PREMIX code.  Two levels of solution-adaptive refinement are automatically triggered by the presence of the flame intermediate, HO2.</p></li>
+<li><p>In addition to informative output to the terminal, periodic plotfiles are written in the run folder.  These may be viewed with CCSE’s Amrvis (&lt;<a class="reference external" href="https://ccse.lbl.gov/Downloads/downloadAmrvis.html">https://ccse.lbl.gov/Downloads/downloadAmrvis.html</a>&gt;) or Vis-It (&lt;<a class="reference external" href="http://vis.lbl.gov/NERSC/Software/visit/">http://vis.lbl.gov/NERSC/Software/visit/</a>&gt;):</p>
+<ol class="arabic simple">
+<li><p>In Vis-It, direct the File-&gt;Open dialogue to select the file named “Header” that is inside each plotfile folder..</p></li>
+<li><p>With Amrvis, “amrvis3d plt00030”, for example.</p></li>
+</ol>
+</li>
+</ol>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h3>
+<p><cite>PeleC</cite> was created as a renamed, stripped down version of <cite>Maui</cite>, and is built on the <cite>AMReX</cite> library.  In the process, the Microphysics folder was extracted, and reorganized into a separate repository, <cite>PelePhysics</cite>.</p>
+</div>
+<div class="section" id="development-model">
+<h3>Development model<a class="headerlink" href="#development-model" title="Permalink to this headline">¶</a></h3>
+<p>To add a new feature to PeleC, the procedure is:</p>
+<ol class="arabic">
+<li><p>Create a branch for the new feature (locally):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">checkout</span> <span class="o">-</span><span class="n">b</span> <span class="n">AmazingNewFeature</span>
+</pre></div>
+</div>
+</li>
+<li><p>Develop the feature, merging changes often from the development branch into your AmazingNewFeature branch:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">m</span> <span class="s2">&quot;Developed AmazingNewFeature&quot;</span>
+<span class="n">git</span> <span class="n">checkout</span> <span class="n">development</span>
+<span class="n">git</span> <span class="n">pull</span>                     <span class="p">[</span><span class="n">fix</span> <span class="nb">any</span> <span class="n">identified</span> <span class="n">conflicts</span> <span class="n">between</span> <span class="n">local</span> <span class="ow">and</span> <span class="n">remote</span> <span class="n">branches</span> <span class="n">of</span> <span class="s2">&quot;development&quot;</span><span class="p">]</span>
+<span class="n">git</span> <span class="n">checkout</span> <span class="n">AmazingNewFeature</span>
+<span class="n">git</span> <span class="n">merge</span> <span class="n">development</span>        <span class="p">[</span><span class="n">fix</span> <span class="nb">any</span> <span class="n">identified</span> <span class="n">conflicts</span> <span class="n">between</span> <span class="s2">&quot;development&quot;</span> <span class="ow">and</span> <span class="s2">&quot;AmazingNewFeature&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p>Push feature branch to PeleC repository:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">push</span> <span class="o">-</span><span class="n">u</span> <span class="n">origin</span> <span class="n">AmazingNewFeature</span> <span class="p">[</span><span class="n">Note</span><span class="p">:</span> <span class="o">-</span><span class="n">u</span> <span class="n">option</span> <span class="n">required</span> <span class="n">only</span> <span class="k">for</span> <span class="n">the</span> <span class="n">first</span> <span class="n">push</span> <span class="n">of</span> <span class="n">new</span> <span class="n">branch</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p>Submit a merge request through <a class="reference external" href="mailto:git&#37;&#52;&#48;github&#46;com">git<span>&#64;</span>github<span>&#46;</span>com</a>:AMReX-Combustion/PeleC.git, and make sure you are requesting a merge against the development branch</p></li>
+<li><p>Check the CI status on Github and make sure the tests passed for merge request</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Github CI uses the CMake build system and CTest to test the core source files of PeleC. If you are adding source files, you will need to add them to the list of source files in the <code class="docutils literal notranslate"><span class="pre">CMake</span></code> directory for the tests to pass. Make sure to add them to the GNU make makefiles as well.</p>
+</div>
+</div>
+<div class="section" id="test-status">
+<h3>Test Status<a class="headerlink" href="#test-status" title="Permalink to this headline">¶</a></h3>
+<p>Nightly test results for PeleC against multiple compilers and machines can be seen on its CDash page <a class="reference external" href="https://my.cdash.org/index.php?project=PeleC">here</a>. Static analysis results for PeleC can be seen in the notes of the newest GCC compiler on CDash. PeleC is also tested using the Clang address sanitizer to detect memory leaks.</p>
+<p>Test results for the GNU Make implementation of PeleC can be seen <a class="reference external" href="https://amrex-combustion.github.io/PeleCRegressionTestResults">here</a>.</p>
+</div>
+<div class="section" id="documentation">
+<h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h3>
+<p>The full documentation for Pele exists in the Docs directory; at present this is maintained inline using Doxygen
+and Sphinx  <a class="reference external" href="http://www.sphinx-doc.org">Sphinx</a>. With
+Sphinx, documentation is written in <em>Restructured Text</em>. reST is a markup language
+similar to Markdown, but with somewhat greater capabilities (and idiosyncrasies). There
+are several <a class="reference external" href="http://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html">primers</a>
+available to get started. One gotcha is that indentation matters.
+To build the documentation, run Doxygen in the Docs directory then build the sphinx</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">doxygen</span> <span class="n">Doxyfile</span>
+<span class="n">cd</span> <span class="n">sphinx_doc</span>
+<span class="n">make</span> <span class="n">html</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="acknowledgment">
+<h3>Acknowledgment<a class="headerlink" href="#acknowledgment" title="Permalink to this headline">¶</a></h3>
+<p>This research was supported by the Exascale Computing Project (ECP), Project
+Number: 17-SC-20-SC, a collaborative effort of two DOE organizations – the
+Office of Science and the National Nuclear Security Administration –
+responsible for the planning and preparation of a capable exascale ecosystem –
+including software, applications, hardware, advanced system engineering, and
+early testbed platforms – to support the nation’s exascale computing
+imperative.</p>
+</div>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Introduction.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright AMReX Copyright (c) 2017, The Regents of the University of California, through Lawrence Berkeley National Laboratory and the Alliance for Sustainable Energy, LLC., through National Renewable Energy Laboratory (subject to receipt of any required approvals from the U.S. Dept. of Energy).  All rights reserved.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,249 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>C12. Smooth periodic problem &mdash; PeleC 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> PeleC
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Equations.html">Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Algorithms.html">Numerical Treatment and Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../BoundaryConditions.html">Boundary Conditions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../geometry/EB.html">Geometry treatment in PeleC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../LES.html">LES and Hybrid LES/DNS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../VandV.html">Correctness - Verification and Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PelePhysics.html">PelePhysics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscellaneous/miscellaneous.html">Miscellaneous Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boxlib_bits.html">Development Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PeleC</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>C12. Smooth periodic problem</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/ebverification/C12/README.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="c12-smooth-periodic-problem">
+<h1>C12. Smooth periodic problem<a class="headerlink" href="#c12-smooth-periodic-problem" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="case-description">
+<h2>Case description<a class="headerlink" href="#case-description" title="Permalink to this headline">¶</a></h2>
+<p>This is the standard smooth advection problem with <span class="math notranslate nohighlight">\(u_0=1\)</span>, <span class="math notranslate nohighlight">\(p_0=1\)</span>, and</p>
+<div class="math notranslate nohighlight">
+\[\rho(x) = 1 + 0.2 \sin (\pi x)\]</div>
+<p>This is an exact solution to the Euler equations and reduces them to
+simple linear advection with a constant velocity. Periodic boundary
+conditions are imposed. The gas constant is <span class="math notranslate nohighlight">\(\gamma=1.4\)</span>. Usage
+of such a test case can be found in references such as Guan-Shan Jiang
+and Chi-Wang Shu. “Efficient implementation of weighted eno
+schemes”. J.  Comp. Phys., 126:202–228 (1996) and Liska and Wendroff
+“Comparison of several difference schemes on 1D and 2D test problems
+for the Euler equations”. SIAM J. Sci. Comput., 25(3), 995–1017
+(2006).</p>
+<p>Simulations are performed in an <span class="math notranslate nohighlight">\(x\)</span>-direction aligned circular
+channel. The cylinder radius, <span class="math notranslate nohighlight">\(R\)</span>, is 0.1cm and the cylinder
+length, <span class="math notranslate nohighlight">\(L\)</span>, is 2cm. The simulations are performed until
+<span class="math notranslate nohighlight">\(t=2\)</span>, at which point the wave is back at its starting location.</p>
+</div>
+<div class="section" id="density-profiles-in-centerline">
+<h2>Density profiles in centerline<a class="headerlink" href="#density-profiles-in-centerline" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="ebverification/C12/./ebverification/C12/rho.png"><img alt="ebverification/C12/./ebverification/C12/rho.png" src="ebverification/C12/./ebverification/C12/rho.png" style="height: 300pt;" /></a>
+</div>
+<div class="section" id="l-2-error-norm-of-density">
+<h2><span class="math notranslate nohighlight">\(L_2\)</span> error norm of density<a class="headerlink" href="#l-2-error-norm-of-density" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="ebverification/C12/./ebverification/C12/error.png"><img alt="ebverification/C12/./ebverification/C12/error.png" src="ebverification/C12/./ebverification/C12/error.png" style="height: 300pt;" /></a>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The second order convergence observed here is expected for this
+test case as all relevant physics happen in the direction
+perpendicular to the EB surface.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright AMReX Copyright (c) 2017, The Regents of the University of California, through Lawrence Berkeley National Laboratory and the Alliance for Sustainable Energy, LLC., through National Renewable Energy Laboratory (subject to receipt of any required approvals from the U.S. Dept. of Energy).  All rights reserved.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,991 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Correctness - Verification and Validation &mdash; PeleC 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="PelePhysics" href="PelePhysics.html" />
+    <link rel="prev" title="LES and Hybrid LES/DNS Support" href="LES.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> PeleC
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Equations.html">Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Algorithms.html">Numerical Treatment and Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BoundaryConditions.html">Boundary Conditions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geometry/EB.html">Geometry treatment in PeleC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LES.html">LES and Hybrid LES/DNS Support</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Correctness - Verification and Validation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#verification-of-pelec">Verification of PeleC</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#building-and-running-mms">Building and running MMS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building-masa-from-source">Building MASA from source</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building-masa-using-spack">Building MASA using Spack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linking-masa-to-pelec-and-running">Linking MASA to PeleC and running</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#running-the-full-mms-suite">Running the full MMS suite</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#testing-the-euler-equations">Testing the Euler equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#testing-the-compressible-navier-stokes-equations">Testing the compressible Navier-Stokes equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#testing-the-adaptive-mesh-refinement-algorithm">Testing the adaptive mesh refinement algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#testing-the-constant-smagorinsky-large-eddy-simulation-model">Testing the constant Smagorinsky Large Eddy Simulation model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#verification-of-eb-pelec">Verification of EB PeleC</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#c1-method-of-manufactured-solutions-for-eb">C1. Method of manufactured solutions for EB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#case-description">Case description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#l-2-error-norm-of-fields"><span class="math notranslate nohighlight">\(L_2\)</span> error norm of fields</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#c3-zero-dimensional-ignition-with-embedded-boundaries">C3. Zero dimensional ignition with embedded boundaries</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">Case description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-embedded-boundary-used-in-the-zero-dimensional-ignition-case">The embedded boundary used in the zero dimensional ignition case</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#comparison-of-temperature-transients-between-cantera-and-pelec">Comparison of temperature transients between Cantera and PeleC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#c7-sod-shock-tube-in-rotated-channel-with-amr">C7. Sod shock tube in rotated channel with AMR</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id4">Case description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#density-at-t-0-1s">Density at t=0.1s</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#field-profiles-in-the-centerline-at-t-0-1s">Field profiles in the centerline at t=0.1s</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#c8-multi-species-shock-tube-in-a-rotated-channel-with-amr">C8. Multi-species shock tube in a rotated channel with AMR</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id5">Case description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#amr-mesh-indicating-refinement-at-embedded-boundary-contact-and-shock-discontinuities">AMR mesh indicating refinement at embedded boundary, contact and shock discontinuities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#field-profiles-in-the-centerline-at-t-0-2-l-sqrt-rhol-pl">Field profiles in the centerline at t=0.2 L sqrt(rhoL/pL)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#c9-acoustic-wave-in-cylindrical-channel">C9. Acoustic wave in cylindrical channel</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id6">Case description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acoustic-pulse-at-t-0-000625s">Acoustic pulse at <span class="math notranslate nohighlight">\(t=0.000625s\)</span></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#density-profiles-in-the-centerline-at-t-0-000625s">Density profiles in the centerline at <span class="math notranslate nohighlight">\(t=0.000625s\)</span></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#l-2-error-norm-of-density"><span class="math notranslate nohighlight">\(L_2\)</span> error norm of density</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#c10-hagenpoiseuille-flow">C10. Hagen–Poiseuille flow</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id7">Case description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#velocity-profiles-at-x-6-cm-channel-center">Velocity profiles at <span class="math notranslate nohighlight">\(x=6\)</span> cm (channel center)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#l-2-error-norm-of-velocity"><span class="math notranslate nohighlight">\(L_2\)</span> error norm of velocity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#time-convergence-of-kinetic-energy">Time convergence of kinetic energy</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#c12-smooth-periodic-problem">C12. Smooth periodic problem</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id8">Case description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#density-profiles-in-centerline">Density profiles in centerline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9"><span class="math notranslate nohighlight">\(L_2\)</span> error norm of density</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#validation-of-pelec">Validation of PeleC</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#decay-of-homogeneous-isotropic-turbulence">Decay of homogeneous isotropic turbulence</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#generating-the-initial-conditions">Generating the initial conditions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building-and-running">Building and running</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#results">Results</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#taylor-green-vortex-breakdown">Taylor-Green vortex breakdown</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id11">Building and running</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">Results</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#reacting-taylor-green-vortex-breakdown">Reacting Taylor-Green vortex breakdown</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#counter-flow-diffusion-flame">Counter flow diffusion flame</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#counter-flow-premixed-flame">Counter flow premixed flame</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#flame-vortex-interaction">Flame-Vortex interaction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sandia-flame-d">Sandia Flame D</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#premixed-ignition-kernel-in-isotropic-turbulence">Premixed ignition kernel in isotropic turbulence</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="PelePhysics.html">PelePhysics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="miscellaneous/miscellaneous.html">Miscellaneous Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boxlib_bits.html">Development Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PeleC</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Correctness - Verification and Validation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/VandV.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="correctness-verification-and-validation">
+<span id="vandv"></span><h1>Correctness - Verification and Validation<a class="headerlink" href="#correctness-verification-and-validation" title="Permalink to this headline">¶</a></h1>
+<p>PeleC undergoes significant testing to ensure correct operation. Synthetic tests are used to verify expected numerical performance (<a class="reference internal" href="#verification">Verification</a>); correctness of the results is established through a collection of physically meaningful tests that are used as the basis for a regression test suite (<a class="reference internal" href="#validation">Validation</a>). A suite of regression tests is run nightly and the results are posted <a class="reference external" href="https://amrex-combustion.github.io/PeleCRegressionTestResults/">here</a>.</p>
+<div class="section" id="verification-of-pelec">
+<h2>Verification of PeleC<a class="headerlink" href="#verification-of-pelec" title="Permalink to this headline">¶</a></h2>
+<p>Verification of PeleC uses <a class="reference external" href="https://github.com/manufactured-solutions/MASA">MASA</a> and
+auto-differention tools to implement the Method of Manufactured
+Solutions into PeleC.</p>
+<p>The <span class="math notranslate nohighlight">\(L_2\)</span> error norm for a quantity <span class="math notranslate nohighlight">\(s\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[e_s = \sqrt{ \frac{\sum_{i=1}^{N_e} \int_{V_i} (s^h-s^*)^2 \mathrm{d}V}{\sum_{i=1}^{N_e} \|V_i\|}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(s^h\)</span> is the numerical solution, <span class="math notranslate nohighlight">\(s^*\)</span> is the exact
+solution, and <span class="math notranslate nohighlight">\(N_e\)</span> is the number of elements. <span class="math notranslate nohighlight">\(N\)</span>, used
+below, is the number of element on a side of the cube (<span class="math notranslate nohighlight">\(N_e =
+N^3\)</span>).</p>
+<div class="section" id="building-and-running-mms">
+<h3>Building and running MMS<a class="headerlink" href="#building-and-running-mms" title="Permalink to this headline">¶</a></h3>
+<p>The user must first build and install <a class="reference external" href="https://github.com/manufactured-solutions/MASA">MASA</a>. This can be done
+from source or using <a class="reference external" href="https://spack.io">Spack</a>.</p>
+<div class="section" id="building-masa-from-source">
+<h4>Building MASA from source<a class="headerlink" href="#building-masa-from-source" title="Permalink to this headline">¶</a></h4>
+<p>The user must build both <a class="reference external" href="https://github.com/roystgnr/MetaPhysicL">Metaphysicl</a> and MASA. After defining
+<code class="docutils literal notranslate"><span class="pre">METAPHYSICL_ROOT_DIR</span></code> and <code class="docutils literal notranslate"><span class="pre">MASA_ROOT_DIR</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/roystgnr/MetaPhysicL
+$ ./bootstrap
+$ ./configure --prefix<span class="o">=</span><span class="nv">$METAPHYSICL_ROOT_DIR</span>
+$ make
+$ make install
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/manufactured-solutions/MASA
+$ ./bootstrap
+$ ./configure --enable-fortran-interfaces <span class="nv">METAPHYSICL_DIR</span><span class="o">=</span><span class="nv">$METAPHYSICL_ROOT_DIR</span> --prefix<span class="o">=</span><span class="nv">$MASA_ROOT_DIR</span> --enable-python-interfaces
+$ make
+$ make check
+$ make install
+</pre></div>
+</div>
+</div>
+<div class="section" id="building-masa-using-spack">
+<h4>Building MASA using Spack<a class="headerlink" href="#building-masa-using-spack" title="Permalink to this headline">¶</a></h4>
+<p>Assuming the user has Spack configured for their system, building and
+installing MASA is as easy as:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ spack install masa
+</pre></div>
+</div>
+</div>
+<div class="section" id="linking-masa-to-pelec-and-running">
+<h4>Linking MASA to PeleC and running<a class="headerlink" href="#linking-masa-to-pelec-and-running" title="Permalink to this headline">¶</a></h4>
+<p>For the MMS problem setup, one must specify the install location for
+MASA in the <code class="docutils literal notranslate"><span class="pre">MASA_HOME</span></code> variable. This can be done on the command
+line either as:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">export</span> <span class="nv">MASA_HOME</span><span class="o">=</span><span class="nv">$MASA_ROOT_DIR</span>
+</pre></div>
+</div>
+<p>or, when compiling PeleC,</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ make -j <span class="m">16</span> <span class="nv">DIM</span><span class="o">=</span><span class="m">3</span> <span class="nv">USE_MPI</span><span class="o">=</span>TRUE <span class="nv">MASA_HOME</span><span class="o">=</span><span class="nv">$MASA_ROOT_DIR</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">MASA_ROOT_DIR</span></code> is the MASA install location. If using Spack
+and after loading the MASA module, the <code class="docutils literal notranslate"><span class="pre">MASA_ROOT_DIR</span></code> will be
+automatically populated.</p>
+<p>After building the PeleC MMS executable, one can perform an MMS
+convergence study to demonstrate formal accuracy of the numerical
+implementation. Results of several MMS tests are detailed below.</p>
+</div>
+<div class="section" id="running-the-full-mms-suite">
+<h4>Running the full MMS suite<a class="headerlink" href="#running-the-full-mms-suite" title="Permalink to this headline">¶</a></h4>
+<p>The full MMS suite can be executed through the <a class="reference external" href="https://github.com/AMReX-Combustion/PeleRegressionTesting">PeleCRegressionTesting</a> test
+suite:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ./verify-pelec.sh
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="testing-the-euler-equations">
+<h3>Testing the Euler equations<a class="headerlink" href="#testing-the-euler-equations" title="Permalink to this headline">¶</a></h3>
+<p>We can turn off diffusion in Pele and set the coefficients for those
+terms to zero in MASA to test the hydrodynamic update. A convergence
+study shows second order for Pele’s treatment of the hydrodynamic
+source. The initial solution was initialized to the exact solution and
+100 pseudo-time steps were taken (fixed to <span class="math notranslate nohighlight">\(10^{-8}\)</span>). Periodic boundaries
+are imposed everywhere.</p>
+<ul class="simple">
+<li><p>Density <span class="math notranslate nohighlight">\(L_2\)</span> error norm:</p></li>
+</ul>
+<a class="reference internal image-reference" href="_images/rho_error.png"><img alt="_images/rho_error.png" src="_images/rho_error.png" style="width: 300pt;" /></a>
+<ul class="simple">
+<li><p>Velocity (u, v, w) <span class="math notranslate nohighlight">\(L_2\)</span> error norm:</p></li>
+</ul>
+<a class="reference internal image-reference" href="_images/u_error.png"><img alt="_images/u_error.png" src="_images/u_error.png" style="width: 300pt;" /></a>
+<a class="reference internal image-reference" href="_images/v_error.png"><img alt="_images/v_error.png" src="_images/v_error.png" style="width: 300pt;" /></a>
+<a class="reference internal image-reference" href="_images/w_error.png"><img alt="_images/w_error.png" src="_images/w_error.png" style="width: 300pt;" /></a>
+<ul class="simple">
+<li><p>Pressure <span class="math notranslate nohighlight">\(L_2\)</span> error norm:</p></li>
+</ul>
+<a class="reference internal image-reference" href="_images/p_error.png"><img alt="_images/p_error.png" src="_images/p_error.png" style="width: 300pt;" /></a>
+</div>
+<div class="section" id="testing-the-compressible-navier-stokes-equations">
+<h3>Testing the compressible Navier-Stokes equations<a class="headerlink" href="#testing-the-compressible-navier-stokes-equations" title="Permalink to this headline">¶</a></h3>
+<p>For these cases, the Reynolds, Mach, and Prandtl numbers were set to 1
+to ensure that the different physics were equally important
+(viscosity, conductivity, and bulk viscosity are non-zero and
+determined by the appropriate non-dimensional number). The CFL
+condition was fixed to 0.1 to ensure that the predictor-corrector time
+stepping method found a solution to the system of equations. The
+initial solution was initialized to the exact solution. Periodic
+boundaries are imposed everywhere. A convergence study shows second
+order for Pele’s treatment of the compressible Navier-Stokes
+equations.</p>
+<p>Initial difficulties in getting the solution to reach steady state for
+the Euler equations (no diffusion) were overcome by incorporating
+diffusion effects and reducing the CFL number. Setting the Reynolds,
+Mach, and Prandtl to 1, and taking small time steps ensures that the
+pseudo-time integration (predictor/corrector) does not oscillate
+wildly and fail to find the steady-state solution. The iterative error
+was monitored and the final time (identical for all simulations) was
+chosen so that the iterative error was small,
+<span class="math notranslate nohighlight">\(\mathcal{O}(10^{6})\)</span> smaller than the discretization error. The
+iterative error never reaches machine zero. This is most likely due to
+the way in which the predictor/correct pseudo-time integration uses
+time steps based on the wave speeds and viscosity and not adjusting
+the time step based on the Jacobian of the system. An actual
+steady-state solver (rather than a pseudo-time integration to steady
+state) would be more efficient and more robust at finding the steady
+state solution of the MMS system of equations. While this would test
+the spatial discretization scheme, an MMS simulation with a steady
+state solver would fail to test the temporal discretization scheme.</p>
+<ul class="simple">
+<li><p>Density <span class="math notranslate nohighlight">\(L_2\)</span> error norm:</p></li>
+</ul>
+<a class="reference internal image-reference" href="_images/rho_error1.png"><img alt="_images/rho_error1.png" src="_images/rho_error1.png" style="width: 300pt;" /></a>
+<ul class="simple">
+<li><p>Velocity (u, v, w) <span class="math notranslate nohighlight">\(L_2\)</span> error norm:</p></li>
+</ul>
+<a class="reference internal image-reference" href="_images/u_error1.png"><img alt="_images/u_error1.png" src="_images/u_error1.png" style="width: 300pt;" /></a>
+<a class="reference internal image-reference" href="_images/v_error1.png"><img alt="_images/v_error1.png" src="_images/v_error1.png" style="width: 300pt;" /></a>
+<a class="reference internal image-reference" href="_images/w_error1.png"><img alt="_images/w_error1.png" src="_images/w_error1.png" style="width: 300pt;" /></a>
+<ul class="simple">
+<li><p>Pressure <span class="math notranslate nohighlight">\(L_2\)</span> error norm:</p></li>
+</ul>
+<a class="reference internal image-reference" href="_images/p_error1.png"><img alt="_images/p_error1.png" src="_images/p_error1.png" style="width: 300pt;" /></a>
+</div>
+<div class="section" id="testing-the-adaptive-mesh-refinement-algorithm">
+<h3>Testing the adaptive mesh refinement algorithm<a class="headerlink" href="#testing-the-adaptive-mesh-refinement-algorithm" title="Permalink to this headline">¶</a></h3>
+<p>This setup is similar to the previous one except for the fact that
+this test uses the AMR framework. There are two grid refinement
+levels: a coarse grid covering the entire domain and a fine grid on
+top of this one covering 50% of the domain. The grids are fixed in
+time, i.e. they do not adapt based on the solution value. This test
+ensures that the algorithms dealing with the grid interfaces, time
+integration of the different levels, and level synchronization
+preserve the second order accuracy of the code.</p>
+<ul class="simple">
+<li><p>Magnitude of velocity and mesh:</p></li>
+</ul>
+<a class="reference internal image-reference" href="_images/umag_amr.png"><img alt="_images/umag_amr.png" src="_images/umag_amr.png" style="width: 200pt;" /></a>
+<ul class="simple">
+<li><p>Velocity <span class="math notranslate nohighlight">\(L_2\)</span> error norm:</p></li>
+</ul>
+<a class="reference internal image-reference" href="_images/u_error_amr.png"><img alt="_images/u_error_amr.png" src="_images/u_error_amr.png" style="width: 300pt;" /></a>
+</div>
+<div class="section" id="testing-the-constant-smagorinsky-large-eddy-simulation-model">
+<h3>Testing the constant Smagorinsky Large Eddy Simulation model<a class="headerlink" href="#testing-the-constant-smagorinsky-large-eddy-simulation-model" title="Permalink to this headline">¶</a></h3>
+<p>This setup is identical to the MMS study for the compressible
+Navier-Stokes equations. The Large Eddy Simulation (LES) constants,
+<span class="math notranslate nohighlight">\(C_s\)</span> and <span class="math notranslate nohighlight">\(C_I\)</span>, were chosen such that the turbulent eddy
+viscosity was comparable to the viscosity,
+i.e. <span class="math notranslate nohighlight">\(\frac{\mu_t}{\mu} = \mathcal{O}(1)\)</span>. Since the model
+scales with the mesh spacing, <span class="math notranslate nohighlight">\(C_s\)</span> and <span class="math notranslate nohighlight">\(C_I\)</span> were scaled
+inversely with the mesh spacing for the mesh refinement studies. For
+example, <span class="math notranslate nohighlight">\(C_s\)</span> is set to 2 for the <span class="math notranslate nohighlight">\(8^3\)</span> mesh and set to 4
+for the <span class="math notranslate nohighlight">\(16^3\)</span> mesh (for <span class="math notranslate nohighlight">\(C_I\)</span>, it is 1 and 4,
+respectively). A convergence study shows second order for Pele’s
+treatment of the compressible Navier-Stokes equations with the
+constant Smagorinsky Large Eddy Simulation model.</p>
+<ul class="simple">
+<li><p>Density <span class="math notranslate nohighlight">\(L_2\)</span> error norm:</p></li>
+</ul>
+<a class="reference internal image-reference" href="./verification/les/rho_error.png"><img alt="./verification/les/rho_error.png" src="./verification/les/rho_error.png" style="width: 300pt;" /></a>
+<ul class="simple">
+<li><p>Velocity (u, v, w) <span class="math notranslate nohighlight">\(L_2\)</span> error norm:</p></li>
+</ul>
+<a class="reference internal image-reference" href="./verification/les/u_error.png"><img alt="./verification/les/u_error.png" src="./verification/les/u_error.png" style="width: 300pt;" /></a>
+<a class="reference internal image-reference" href="./verification/les/v_error.png"><img alt="./verification/les/v_error.png" src="./verification/les/v_error.png" style="width: 300pt;" /></a>
+<a class="reference internal image-reference" href="./verification/les/w_error.png"><img alt="./verification/les/w_error.png" src="./verification/les/w_error.png" style="width: 300pt;" /></a>
+<ul class="simple">
+<li><p>Pressure <span class="math notranslate nohighlight">\(L_2\)</span> error norm:</p></li>
+</ul>
+<a class="reference internal image-reference" href="./verification/les/p_error.png"><img alt="./verification/les/p_error.png" src="./verification/les/p_error.png" style="width: 300pt;" /></a>
+</div>
+</div>
+<div class="section" id="verification-of-eb-pelec">
+<h2>Verification of EB PeleC<a class="headerlink" href="#verification-of-eb-pelec" title="Permalink to this headline">¶</a></h2>
+<p>Verification of the EB capability in PeleC follows several different
+paths in order to ensure the widest coverage of scenarios. A short
+description and the source code for these test cases are included
+<a class="reference external" href="https://github.com/AMReX-Combustion/PeleC/blob/development/ExecCpp/EBVerification/README.md">here</a>.</p>
+<div class="section" id="c1-method-of-manufactured-solutions-for-eb">
+<h3>C1. Method of manufactured solutions for EB<a class="headerlink" href="#c1-method-of-manufactured-solutions-for-eb" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="case-description">
+<h4>Case description<a class="headerlink" href="#case-description" title="Permalink to this headline">¶</a></h4>
+<p>This is a similar test case problem as performed for PeleC
+verification using MASA to construct a manufactured solution. The MMS
+is performed around a sphere at a Re number and Mach number of 1.</p>
+</div>
+<div class="section" id="l-2-error-norm-of-fields">
+<h4><span class="math notranslate nohighlight">\(L_2\)</span> error norm of fields<a class="headerlink" href="#l-2-error-norm-of-fields" title="Permalink to this headline">¶</a></h4>
+<a class="reference internal image-reference" href="_images/rho_error2.png"><img alt="_images/rho_error2.png" src="_images/rho_error2.png" style="height: 300pt;" /></a>
+<a class="reference internal image-reference" href="_images/p_error2.png"><img alt="_images/p_error2.png" src="_images/p_error2.png" style="height: 300pt;" /></a>
+<a class="reference internal image-reference" href="_images/u_error2.png"><img alt="_images/u_error2.png" src="_images/u_error2.png" style="height: 300pt;" /></a>
+<a class="reference internal image-reference" href="_images/v_error2.png"><img alt="_images/v_error2.png" src="_images/v_error2.png" style="height: 300pt;" /></a>
+<a class="reference internal image-reference" href="_images/w_error2.png"><img alt="_images/w_error2.png" src="_images/w_error2.png" style="height: 300pt;" /></a>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The first order convergence observed here is expected because the
+treatment of the EB surface is first order.</p>
+</div>
+</div>
+</div>
+<div class="section" id="c3-zero-dimensional-ignition-with-embedded-boundaries">
+<h3>C3. Zero dimensional ignition with embedded boundaries<a class="headerlink" href="#c3-zero-dimensional-ignition-with-embedded-boundaries" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id3">
+<h4>Case description<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<p>This case tests the chemistry implementation in the presence of
+embedded boundaries. The geometry is the displacement volume of a
+piston-cylinder system as shown in the first figure. The gas mixture consists
+of H2, O2 and N2 at mass fractions 0.06,0.5 and 0.44, respectively at an
+initial temperature/pressure of 1500K/1 atm. The LiDryer chemical mechanism is used
+in this case. The variation of temperature
+over time that characterizes ignition delay is shown in the second figure where PeleC
+solution compares well with Cantera.</p>
+</div>
+<div class="section" id="the-embedded-boundary-used-in-the-zero-dimensional-ignition-case">
+<h4>The embedded boundary used in the zero dimensional ignition case<a class="headerlink" href="#the-embedded-boundary-used-in-the-zero-dimensional-ignition-case" title="Permalink to this headline">¶</a></h4>
+<a class="reference internal image-reference" href="_images/setup.png"><img alt="_images/setup.png" src="_images/setup.png" style="height: 300pt;" /></a>
+</div>
+<div class="section" id="comparison-of-temperature-transients-between-cantera-and-pelec">
+<h4>Comparison of temperature transients between Cantera and PeleC<a class="headerlink" href="#comparison-of-temperature-transients-between-cantera-and-pelec" title="Permalink to this headline">¶</a></h4>
+<a class="reference internal image-reference" href="_images/zerod_compare.png"><img alt="_images/zerod_compare.png" src="_images/zerod_compare.png" style="height: 300pt;" /></a>
+</div>
+</div>
+<div class="section" id="c7-sod-shock-tube-in-rotated-channel-with-amr">
+<h3>C7. Sod shock tube in rotated channel with AMR<a class="headerlink" href="#c7-sod-shock-tube-in-rotated-channel-with-amr" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id4">
+<h4>Case description<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<p>This is the standard Sod shock tube problem. The geometry is a
+rectangular channel at <span class="math notranslate nohighlight">\(30^\circ\)</span> to the mesh. This case is run
+with multiple levels of AMR. The profiles shown below are through the
+channel centerline.</p>
+</div>
+<div class="section" id="density-at-t-0-1s">
+<h4>Density at t=0.1s<a class="headerlink" href="#density-at-t-0-1s" title="Permalink to this headline">¶</a></h4>
+<a class="reference internal image-reference" href="_images/stube.png"><img alt="_images/stube.png" src="_images/stube.png" style="height: 300pt;" /></a>
+</div>
+<div class="section" id="field-profiles-in-the-centerline-at-t-0-1s">
+<h4>Field profiles in the centerline at t=0.1s<a class="headerlink" href="#field-profiles-in-the-centerline-at-t-0-1s" title="Permalink to this headline">¶</a></h4>
+<a class="reference internal image-reference" href="_images/rho.png"><img alt="_images/rho.png" src="_images/rho.png" style="height: 300pt;" /></a>
+<a class="reference internal image-reference" href="_images/p.png"><img alt="_images/p.png" src="_images/p.png" style="height: 300pt;" /></a>
+<a class="reference internal image-reference" href="_images/u.png"><img alt="_images/u.png" src="_images/u.png" style="height: 300pt;" /></a>
+<a class="reference internal image-reference" href="_images/temp.png"><img alt="_images/temp.png" src="_images/temp.png" style="height: 300pt;" /></a>
+</div>
+</div>
+<div class="section" id="c8-multi-species-shock-tube-in-a-rotated-channel-with-amr">
+<h3>C8. Multi-species shock tube in a rotated channel with AMR<a class="headerlink" href="#c8-multi-species-shock-tube-in-a-rotated-channel-with-amr" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id5">
+<h4>Case description<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<p>This case is a non-reacting multi-species shock tube problem
+that tests inviscid hydrodynamics and the handling
+of species in a domain with embedded boundaries. The geometry is a
+rectangular channel at <span class="math notranslate nohighlight">\(30^\circ\)</span> to the mesh. The left half of the
+channel is initialized with pure nitrogen while the right is initialized with helium.
+The pressure and density ratios are 0.1 and 0.125 respectively, similar to the Sod shock tube problem.
+This case is run with multiple levels of AMR. The figures shown below indicate mesh refinement at
+the embedded boundary, contact and shock discontinuities. The center-line density profile is
+compares well with data from literature.</p>
+</div>
+<div class="section" id="amr-mesh-indicating-refinement-at-embedded-boundary-contact-and-shock-discontinuities">
+<h4>AMR mesh indicating refinement at embedded boundary, contact and shock discontinuities<a class="headerlink" href="#amr-mesh-indicating-refinement-at-embedded-boundary-contact-and-shock-discontinuities" title="Permalink to this headline">¶</a></h4>
+<a class="reference internal image-reference" href="_images/ebmesh.png"><img alt="_images/ebmesh.png" src="_images/ebmesh.png" style="height: 300pt;" /></a>
+</div>
+<div class="section" id="field-profiles-in-the-centerline-at-t-0-2-l-sqrt-rhol-pl">
+<h4>Field profiles in the centerline at t=0.2 L sqrt(rhoL/pL)<a class="headerlink" href="#field-profiles-in-the-centerline-at-t-0-2-l-sqrt-rhol-pl" title="Permalink to this headline">¶</a></h4>
+<a class="reference internal image-reference" href="_images/density.png"><img alt="_images/density.png" src="_images/density.png" style="height: 300pt;" /></a>
+</div>
+</div>
+<div class="section" id="c9-acoustic-wave-in-cylindrical-channel">
+<h3>C9. Acoustic wave in cylindrical channel<a class="headerlink" href="#c9-acoustic-wave-in-cylindrical-channel" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id6">
+<h4>Case description<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
+<p>This is the case of an acoustic wave propagating in a cylindrical
+channel. The geometry is a <span class="math notranslate nohighlight">\(x\)</span>-direction aligned circular
+channel with periodic boundary conditions. The acoustic wave
+propagates along the <span class="math notranslate nohighlight">\(x\)</span> direction.</p>
+<p>The density pulse at the center of the channel is defined as:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\rho'(x) = \alpha \exp(-(x/\sigma)^2)\\\rho(x) = \rho_0 + \rho'(x)\\p(x) = p_0 + \rho'(x) c_s c_s\\u(x) = c_s \rho'(x) / \rho_0\end{aligned}\end{align} \]</div>
+<p>The background pressure is set to <span class="math notranslate nohighlight">\(p_0 = 100000 erg/cm^3\)</span>, the
+background density is set to <span class="math notranslate nohighlight">\(\rho_0 = 0.0014 g/cm^3\)</span>,
+<span class="math notranslate nohighlight">\(\alpha=10^{-6} g/cm^3\)</span>, and <span class="math notranslate nohighlight">\(\sigma=10cm\)</span>. The length of
+the channel is 100cm and the radius is 25cm. The simulations are
+performed for <span class="math notranslate nohighlight">\(t=0.000625s\)</span>. The CFL is set to 0.001 to minimize
+time discretization errors.</p>
+</div>
+<div class="section" id="acoustic-pulse-at-t-0-000625s">
+<h4>Acoustic pulse at <span class="math notranslate nohighlight">\(t=0.000625s\)</span><a class="headerlink" href="#acoustic-pulse-at-t-0-000625s" title="Permalink to this headline">¶</a></h4>
+<a class="reference internal image-reference" href="_images/pulse.png"><img alt="_images/pulse.png" src="_images/pulse.png" style="height: 200pt;" /></a>
+</div>
+<div class="section" id="density-profiles-in-the-centerline-at-t-0-000625s">
+<h4>Density profiles in the centerline at <span class="math notranslate nohighlight">\(t=0.000625s\)</span><a class="headerlink" href="#density-profiles-in-the-centerline-at-t-0-000625s" title="Permalink to this headline">¶</a></h4>
+<a class="reference internal image-reference" href="_images/rho1.png"><img alt="_images/rho1.png" src="_images/rho1.png" style="height: 300pt;" /></a>
+</div>
+<div class="section" id="l-2-error-norm-of-density">
+<h4><span class="math notranslate nohighlight">\(L_2\)</span> error norm of density<a class="headerlink" href="#l-2-error-norm-of-density" title="Permalink to this headline">¶</a></h4>
+<p>The <span class="math notranslate nohighlight">\(L_2\)</span> error norm for a quantity <span class="math notranslate nohighlight">\(s\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[\epsilon = \sqrt{ \frac{\sum_{i=1}^{n_x} (s_i^h-s_i^*)^2 }{n_x}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(s^h\)</span> is the numerical solution, <span class="math notranslate nohighlight">\(s^*\)</span> is the exact
+solution, and <span class="math notranslate nohighlight">\(n_x\)</span> is the number of cells in the
+<span class="math notranslate nohighlight">\(x\)</span>-direction.</p>
+<a class="reference internal image-reference" href="_images/error.png"><img alt="_images/error.png" src="_images/error.png" style="height: 300pt;" /></a>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The second order convergence observed here is expected for this
+test case as all relevant physics happen in the direction
+perpendicular to the EB surface.</p>
+</div>
+</div>
+</div>
+<div class="section" id="c10-hagenpoiseuille-flow">
+<h3>C10. Hagen–Poiseuille flow<a class="headerlink" href="#c10-hagenpoiseuille-flow" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id7">
+<h4>Case description<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h4>
+<p>This is the standard Hagen–Poiseuille flow. The geometry is a
+<span class="math notranslate nohighlight">\(x\)</span>-direction aligned circular channel with imposed pressure
+boundary conditions at the inflow and the outflow to enforce a driving
+pressure gradient <span class="math notranslate nohighlight">\(dp /dx\)</span>. For this case, the Mach number is
+set to 0.1, the Reynolds number to 100, and the Prandtl number to
+0.71. The background pressure is atmospheric and the background
+temperature is 300K. The cylinder radius, <span class="math notranslate nohighlight">\(R\)</span>, is 1cm and the
+cylinder length, <span class="math notranslate nohighlight">\(L\)</span>, is 12cm. The simulations are performed for
+5 flowthroughs, at which point in time quantities such as kinetic
+energy and momentum are converged.</p>
+<p>The exact solution at steady state is</p>
+<div class="math notranslate nohighlight">
+\[u(r) = \frac{G}{4 \mu} (R^2 - r^2)\]</div>
+<p>where <span class="math notranslate nohighlight">\(G = -dp/dx\)</span>, and <span class="math notranslate nohighlight">\(\mu\)</span> is the dynamic viscosity.</p>
+</div>
+<div class="section" id="velocity-profiles-at-x-6-cm-channel-center">
+<h4>Velocity profiles at <span class="math notranslate nohighlight">\(x=6\)</span> cm (channel center)<a class="headerlink" href="#velocity-profiles-at-x-6-cm-channel-center" title="Permalink to this headline">¶</a></h4>
+<a class="reference internal image-reference" href="_images/u1.png"><img alt="_images/u1.png" src="_images/u1.png" style="height: 300pt;" /></a>
+</div>
+<div class="section" id="l-2-error-norm-of-velocity">
+<h4><span class="math notranslate nohighlight">\(L_2\)</span> error norm of velocity<a class="headerlink" href="#l-2-error-norm-of-velocity" title="Permalink to this headline">¶</a></h4>
+<p>The <span class="math notranslate nohighlight">\(L_2\)</span> error norm for a quantity <span class="math notranslate nohighlight">\(s\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[\epsilon = \sqrt{ \frac{\int_{-r}^{r} (s^h-s^*)^2 \mathrm{d}r}{2 n_r}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(s^h\)</span> is the numerical solution, <span class="math notranslate nohighlight">\(s^*\)</span> is the exact
+solution, and <span class="math notranslate nohighlight">\(n_r\)</span> is the number of cells per radius.</p>
+<a class="reference internal image-reference" href="_images/error1.png"><img alt="_images/error1.png" src="_images/error1.png" style="height: 300pt;" /></a>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The exact solution centerline velocity is adjusted by 0.7% to
+account for compressibility effects. The observance of second order
+behavior is attributed to the fact that this is a diffusion
+dominated problem and diffusion treatment at EB surfaces is second
+order.</p>
+</div>
+</div>
+<div class="section" id="time-convergence-of-kinetic-energy">
+<h4>Time convergence of kinetic energy<a class="headerlink" href="#time-convergence-of-kinetic-energy" title="Permalink to this headline">¶</a></h4>
+<a class="reference internal image-reference" href="_images/ke_history.png"><img alt="_images/ke_history.png" src="_images/ke_history.png" style="height: 300pt;" /></a>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This figure shows that the compressible solution reached a steady
+state. It is not expected that the total integration of the kinetic
+energy in the domain match the incompressible value for integrated
+kinetic energy <span class="math notranslate nohighlight">\(K_e\)</span> because of compressibility effects.</p>
+</div>
+</div>
+</div>
+<div class="section" id="c12-smooth-periodic-problem">
+<h3>C12. Smooth periodic problem<a class="headerlink" href="#c12-smooth-periodic-problem" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id8">
+<h4>Case description<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h4>
+<p>This is the standard smooth advection problem with <span class="math notranslate nohighlight">\(u_0=1\)</span>, <span class="math notranslate nohighlight">\(p_0=1\)</span>, and</p>
+<div class="math notranslate nohighlight">
+\[\rho(x) = 1 + 0.2 \sin (\pi x)\]</div>
+<p>This is an exact solution to the Euler equations and reduces them to
+simple linear advection with a constant velocity. Periodic boundary
+conditions are imposed. The gas constant is <span class="math notranslate nohighlight">\(\gamma=1.4\)</span>. Usage
+of such a test case can be found in references such as Guan-Shan Jiang
+and Chi-Wang Shu. “Efficient implementation of weighted eno
+schemes”. J.  Comp. Phys., 126:202–228 (1996) and Liska and Wendroff
+“Comparison of several difference schemes on 1D and 2D test problems
+for the Euler equations”. SIAM J. Sci. Comput., 25(3), 995–1017
+(2006).</p>
+<p>Simulations are performed in an <span class="math notranslate nohighlight">\(x\)</span>-direction aligned circular
+channel. The cylinder radius, <span class="math notranslate nohighlight">\(R\)</span>, is 0.1cm and the cylinder
+length, <span class="math notranslate nohighlight">\(L\)</span>, is 2cm. The simulations are performed until
+<span class="math notranslate nohighlight">\(t=2\)</span>, at which point the wave is back at its starting location.</p>
+</div>
+<div class="section" id="density-profiles-in-centerline">
+<h4>Density profiles in centerline<a class="headerlink" href="#density-profiles-in-centerline" title="Permalink to this headline">¶</a></h4>
+<a class="reference internal image-reference" href="_images/rho2.png"><img alt="_images/rho2.png" src="_images/rho2.png" style="height: 300pt;" /></a>
+</div>
+<div class="section" id="id9">
+<h4><span class="math notranslate nohighlight">\(L_2\)</span> error norm of density<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h4>
+<a class="reference internal image-reference" href="_images/error2.png"><img alt="_images/error2.png" src="_images/error2.png" style="height: 300pt;" /></a>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The second order convergence observed here is expected for this
+test case as all relevant physics happen in the direction
+perpendicular to the EB surface.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="validation-of-pelec">
+<h2>Validation of PeleC<a class="headerlink" href="#validation-of-pelec" title="Permalink to this headline">¶</a></h2>
+<p>The PeleC validation plan is aimed at exercising and validating the PeleC reacting flow capabilities. The following cases, described further on, are used for validation.</p>
+<ul class="simple">
+<li><p>Decay of homogeneous isotropic turbulence</p></li>
+<li><p>Non reacting Taylor-Green vortex breakdown</p></li>
+<li><p>Reacting Taylor-Green vortex breakdown</p></li>
+<li><p>Counter flow diffusion flame</p></li>
+<li><p>Counter flow premixed flame</p></li>
+<li><p>Flame-Vortex interaction</p></li>
+<li><p>Sandia Flame D</p></li>
+<li><p>Premixed ignition kernel in isotropic turbulence</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This section is a work in progress. Several of these cases have yet
+to be performed and are noted as such.</p>
+</div>
+<div class="section" id="decay-of-homogeneous-isotropic-turbulence">
+<h3>Decay of homogeneous isotropic turbulence<a class="headerlink" href="#decay-of-homogeneous-isotropic-turbulence" title="Permalink to this headline">¶</a></h3>
+<p id="hit">Simulations were performed for turbulent Mach number = 0.1, Taylor
+scale based Reynolds number = 100, Prandtl number = 0.71, and k0 = 4
+at several different resolutions (uniform discretization, no AMR)
+using a prescribed energy spectrum.</p>
+<p>The definitions for the different quantities and reference data (in
+black) can be found in <a class="reference external" href="http://dx.doi.org/10.1016/j.jcp.2009.10.028">Johnsen et al. (2009) JCP</a> and <a class="reference external" href="http://dx.doi.org/10.1017/jfm.2015.200">Movahed and
+Johnsen (2015) JFM</a>. VisIt
+was used to post-process some quantities using <cite>visit_pp_aux_vars.py</cite>
+(located in the Exec/HIT folder) with the command</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ visit -nowin -cli -s Exect/RegTests/visit_pp_aux_vars.py
+</pre></div>
+</div>
+<div class="section" id="generating-the-initial-conditions">
+<h4>Generating the initial conditions<a class="headerlink" href="#generating-the-initial-conditions" title="Permalink to this headline">¶</a></h4>
+<p>The initial conditions for this validation problem are derived from
+the following energy spectrum:</p>
+<div class="math notranslate nohighlight">
+\[E(k) \sim k^4 \exp(-2 (k/k_0)^2), \frac{3 u'}{2} = \int_0^\infty E(k) \mathrm{d}k\]</div>
+<p>and can be generated with the Python script in the HIT directory:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python3 gen_hit_ic.py
+</pre></div>
+</div>
+</div>
+<div class="section" id="building-and-running">
+<h4>Building and running<a class="headerlink" href="#building-and-running" title="Permalink to this headline">¶</a></h4>
+<p>The decay of homogeneous isotropic turbulence case can be found in <code class="docutils literal notranslate"><span class="pre">Exec/RegTests/HIT</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ make -j <span class="m">16</span> <span class="nv">DIM</span><span class="o">=</span><span class="m">3</span> <span class="nv">USE_MPI</span><span class="o">=</span>TRUE
+$ mpiexec -n <span class="m">36</span> <span class="nv">$EXECUTABLE</span> inputs_3d
+</pre></div>
+</div>
+<p>The user can run a convergence study by generating initial conditions
+for higher resolutions and varying <code class="docutils literal notranslate"><span class="pre">amr.ncell</span></code>.</p>
+</div>
+<div class="section" id="results">
+<h4>Results<a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h4>
+<p>As the resolution increases, there is good agreement between the Pele
+data and reference data.</p>
+<div class="figure align-center" id="id13" style="width: 40%">
+<img alt="_images/reynolds.png" src="_images/reynolds.png" />
+<p class="caption"><span class="caption-number">10 </span><span class="caption-text">Reynolds number as a function of time. Solid red: <span class="math notranslate nohighlight">\(32^3\)</span>, dashed green <span class="math notranslate nohighlight">\(64^3\)</span>, dash-dotted blue: <span class="math notranslate nohighlight">\(128^3\)</span>, dotted orange: <span class="math notranslate nohighlight">\(256^3\)</span>, black squares: Johnsen et al. (2009) JCP.</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-center" id="id14" style="width: 40%">
+<img alt="_images/mach.png" src="_images/mach.png" />
+<p class="caption"><span class="caption-number">11 </span><span class="caption-text">Mach number as a function of time. Solid red: <span class="math notranslate nohighlight">\(32^3\)</span>, dashed green <span class="math notranslate nohighlight">\(64^3\)</span>, dash-dotted blue: <span class="math notranslate nohighlight">\(128^3\)</span>, dotted orange: <span class="math notranslate nohighlight">\(256^3\)</span>, black squares: Johnsen et al. (2009) JCP.</span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-center" id="id15" style="width: 40%">
+<img alt="_images/enstrophy.png" src="_images/enstrophy.png" />
+<p class="caption"><span class="caption-number">12 </span><span class="caption-text">Enstrophy as a function of time. Solid red: <span class="math notranslate nohighlight">\(32^3\)</span>, dashed green <span class="math notranslate nohighlight">\(64^3\)</span>, dash-dotted blue: <span class="math notranslate nohighlight">\(128^3\)</span>, dotted orange: <span class="math notranslate nohighlight">\(256^3\)</span>, black squares: Johnsen et al. (2009) JCP.</span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-center" id="id16" style="width: 40%">
+<img alt="_images/KE.png" src="_images/KE.png" />
+<p class="caption"><span class="caption-number">13 </span><span class="caption-text">Kinetic energy as a function of time. Solid red: <span class="math notranslate nohighlight">\(32^3\)</span>, dashed green <span class="math notranslate nohighlight">\(64^3\)</span>, dash-dotted blue: <span class="math notranslate nohighlight">\(128^3\)</span>, dotted orange: <span class="math notranslate nohighlight">\(256^3\)</span>.</span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+</div>
+<div class="section" id="taylor-green-vortex-breakdown">
+<h3>Taylor-Green vortex breakdown<a class="headerlink" href="#taylor-green-vortex-breakdown" title="Permalink to this headline">¶</a></h3>
+<p>This setup is one of the test problems outlined by <a class="reference external" href="https://www.grc.nasa.gov/hiocfd">the High-Order CFD
+workshop</a>. A complete description
+of the problem can be found <a class="reference external" href="https://www.grc.nasa.gov/hiocfd/wp-content/uploads/sites/22/case_c3.3.pdf">at NASA HOCFDW website</a>
+and the reference data is found <a class="reference external" href="https://www.grc.nasa.gov/wp-content/uploads/sites/22/C3.3_datafiles.zip">here</a>. More
+details of the problem and methods used to obtain the reference data
+can be found in <cite>Bull and Jameson (2014) 7th AIAA Theoretical Fluid
+Mechanics Conference (doi: 10.2514/6.2014-3210)</cite> and <cite>DeBonis (2013)
+51st AIAA Aerospace Sciences Meeting (doi:10.2514/6.2013-382)</cite>.</p>
+<div class="section" id="id11">
+<h4>Building and running<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h4>
+<p>The Taylor-Green vortex breakdown case can be found in <code class="docutils literal notranslate"><span class="pre">Exec/RegTests/TG</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ make -j <span class="m">16</span> <span class="nv">DIM</span><span class="o">=</span><span class="m">3</span> <span class="nv">USE_MPI</span><span class="o">=</span>TRUE
+$ mpiexec -n <span class="m">36</span> <span class="nv">$EXECUTABLE</span> inputs_3d amr.ncell<span class="o">=</span><span class="m">64</span> <span class="m">64</span> <span class="m">64</span>
+</pre></div>
+</div>
+<p>The user can run a convergence study by varying <code class="docutils literal notranslate"><span class="pre">amr.ncell</span></code>.</p>
+</div>
+<div class="section" id="id12">
+<h4>Results<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h4>
+<p>As the resolution increases, there is good agreement between the Pele
+data and reference data.</p>
+<div class="figure align-center" id="id17" style="width: 40%">
+<img alt="_images/dissipation.png" src="_images/dissipation.png" />
+<p class="caption"><span class="caption-number">14 </span><span class="caption-text">Dissipation as a function of time. Solid red: <span class="math notranslate nohighlight">\(32^3\)</span>, dashed green <span class="math notranslate nohighlight">\(64^3\)</span>, dash-dotted blue: <span class="math notranslate nohighlight">\(128^3\)</span>, dotted orange: <span class="math notranslate nohighlight">\(256^3\)</span>, black squares: HOCFDW.</span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-center" id="id18" style="width: 40%">
+<img alt="_images/enstrophy1.png" src="_images/enstrophy1.png" />
+<p class="caption"><span class="caption-number">15 </span><span class="caption-text">Enstrophy as a function of time. Solid red: <span class="math notranslate nohighlight">\(32^3\)</span>, dashed green <span class="math notranslate nohighlight">\(64^3\)</span>, dash-dotted blue: <span class="math notranslate nohighlight">\(128^3\)</span>, dotted orange: <span class="math notranslate nohighlight">\(256^3\)</span>, black squares: HOCFDW.</span><a class="headerlink" href="#id18" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-center" id="id19" style="width: 40%">
+<img alt="_images/KE1.png" src="_images/KE1.png" />
+<p class="caption"><span class="caption-number">16 </span><span class="caption-text">Kinetic energy as a function of time. Solid red: <span class="math notranslate nohighlight">\(32^3\)</span>, dashed green <span class="math notranslate nohighlight">\(64^3\)</span>, dash-dotted blue: <span class="math notranslate nohighlight">\(128^3\)</span>, dotted orange: <span class="math notranslate nohighlight">\(256^3\)</span>, black: HOCFDW.</span><a class="headerlink" href="#id19" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-center" id="id20" style="width: 40%">
+<img alt="_images/spectrum.png" src="_images/spectrum.png" />
+<p class="caption"><span class="caption-number">17 </span><span class="caption-text">Spectrum at <span class="math notranslate nohighlight">\(t=9 t_c\)</span>. Solid red: <span class="math notranslate nohighlight">\(32^3\)</span>, dashed green <span class="math notranslate nohighlight">\(64^3\)</span>, dash-dotted blue: <span class="math notranslate nohighlight">\(128^3\)</span>, dotted orange: <span class="math notranslate nohighlight">\(256^3\)</span>, black: HOCFDW.</span><a class="headerlink" href="#id20" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+</div>
+<div class="section" id="reacting-taylor-green-vortex-breakdown">
+<h3>Reacting Taylor-Green vortex breakdown<a class="headerlink" href="#reacting-taylor-green-vortex-breakdown" title="Permalink to this headline">¶</a></h3>
+<p>This test case is based on work by <cite>Abdelsamie et al. (Mini-Symposium
+on Verification and Validation of Combustion DNS, 17th Int. Conference
+on Numerical Combustion, Aachen, Germany May 7, 2019</cite> where a
+Taylor-Green vortex setup used in non-reacting CFD is adapted to a
+reacting flow configuration. Comparison of results from several
+well-established codes such as Nek5000, DINO and YALES are provided in
+the workshop documentation. We have performed the entire suite of
+cases described in the workshop documentation and only present the
+final 3D reacting case.</p>
+<p>Good comparisons with the reference simulations were obtained in most
+of the quantities of interest.</p>
+<div class="figure align-center" id="id21" style="width: 40%">
+<img alt="_images/ux.png" src="_images/ux.png" />
+<p class="caption"><span class="caption-number">18 </span><span class="caption-text"><span class="math notranslate nohighlight">\(x\)</span>-velocity at <span class="math notranslate nohighlight">\(t=5e-4 \tau\)</span>. Solid red: <span class="math notranslate nohighlight">\(32^3\)</span>, dashed green <span class="math notranslate nohighlight">\(64^3\)</span>, dash-dotted blue: <span class="math notranslate nohighlight">\(128^3\)</span>, black: reference solution (DINO).</span><a class="headerlink" href="#id21" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-center" id="id22" style="width: 40%">
+<img alt="_images/yh2.png" src="_images/yh2.png" />
+<p class="caption"><span class="caption-number">19 </span><span class="caption-text"><span class="math notranslate nohighlight">\(Y_{H_2}\)</span> at <span class="math notranslate nohighlight">\(t=5e-4 \tau\)</span>. Solid red: <span class="math notranslate nohighlight">\(32^3\)</span>, dashed green <span class="math notranslate nohighlight">\(64^3\)</span>, dash-dotted blue: <span class="math notranslate nohighlight">\(128^3\)</span>, black: reference solution (DINO).</span><a class="headerlink" href="#id22" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-center" id="id23" style="width: 40%">
+<img alt="_images/hr.png" src="_images/hr.png" />
+<p class="caption"><span class="caption-number">20 </span><span class="caption-text">Heat release at <span class="math notranslate nohighlight">\(t=5e-4 \tau\)</span>. Solid red: <span class="math notranslate nohighlight">\(32^3\)</span>, dashed green <span class="math notranslate nohighlight">\(64^3\)</span>, dash-dotted blue: <span class="math notranslate nohighlight">\(128^3\)</span>, black: reference solution (DINO).</span><a class="headerlink" href="#id23" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-center" id="id24" style="width: 40%">
+<img alt="_images/tmax.png" src="_images/tmax.png" />
+<p class="caption"><span class="caption-number">21 </span><span class="caption-text">Maximum temperature in the domain as a function of time. Solid red: <span class="math notranslate nohighlight">\(32^3\)</span>, dashed green <span class="math notranslate nohighlight">\(64^3\)</span>, dash-dotted blue: <span class="math notranslate nohighlight">\(128^3\)</span>, black: reference solution (DINO).</span><a class="headerlink" href="#id24" title="Permalink to this image">¶</a></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We are not using the constant Lewis approximation that is
+prescribed in the workshop documentation. Instead we rely on
+transport coefficients resulting from PelePhysics. This may lead to
+discrepancies with the reference results.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Because of computational constraints, we have not been able to
+perform higher resolution simulations that may show better
+convergence.</p>
+</div>
+</div>
+<div class="section" id="counter-flow-diffusion-flame">
+<h3>Counter flow diffusion flame<a class="headerlink" href="#counter-flow-diffusion-flame" title="Permalink to this headline">¶</a></h3>
+<p>This test case simulated the well-known counter flow diffusion flame
+where fuel and oxidizer are injected head-on from opposite sides
+forming a stagnation region. The fuel-oxidizer diffusion in the
+stagnation region determines the flame location. The results from a
+PeleC simulation are shown in the figure below. The fuel (CH4) is injected
+from the left and air from the right.  The temperature distribution
+indicates the flame location towards the oxidizer side. In a counter
+flow diffusion flame the key quantity to vary is the strain rate which
+is a function of mass flow rate of oxidizer and fuel streams. In this
+validation exercise, a series of strain rates will be
+simulated. Species and temperature profiles will be compared against
+the benchmark experimental data and well-established chemical kinetics
+solvers such as Cantera. The main motivation behind simulating a
+number of strain rates is to check the capability of PeleC to
+accurately reproduce the critical strain rate, known as the extinction
+limit.</p>
+<div class="figure align-center" id="id25" style="width: 40%">
+<img alt="_images/results.png" src="_images/results.png" />
+<p class="caption"><span class="caption-number">22 </span><span class="caption-text">Fuel mass density is shown in left figure in g/cm3 (0(red)-1e-4(yellow)), oxygen mass density
+is shown in the middle figure (0 (red)-1e-5 (yellow)) and temperature is shown in right figure (1800K (red) - 2300 (yellow)) along with
+velocity vectors.</span><a class="headerlink" href="#id25" title="Permalink to this image">¶</a></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A quantitative comparison with Cantera for varying strain-rates is work in progress</p>
+</div>
+</div>
+<div class="section" id="counter-flow-premixed-flame">
+<h3>Counter flow premixed flame<a class="headerlink" href="#counter-flow-premixed-flame" title="Permalink to this headline">¶</a></h3>
+<p>Similar to the counter-flow diffusion flame, a common test case
+typically used to validate combustion codes is the opposed flow
+premixed flame. In contrast to the diffusion flame, in this case the
+opposing streams are composed of the same premixed
+fuel-air mixture. This case is typically referred to as the twin
+opposed flame because two flames are typically observed on the either
+side of the stagnation point. This case is particularly attractive
+since it allows for extinction at higher strain rates and simplified
+boundary conditions, unburnt mixture and temperature. The metric of
+comparison for the sake of validation would be species and temperature
+profiles. Well known solution profiles from experiments and highly
+resolved mesh converged 1-D Cantera simulations will be used to
+establish the accuracy of PeleC. In addition to profiles, a comparison
+of extinction strain rate will be also be made against the values
+obtained from 1-D Cantera simulation. Finally, we will also validate
+that PeleC simulations predict the correct premixed flame speed in the
+low strain rate limit.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Not yet done.</p>
+</div>
+</div>
+<div class="section" id="flame-vortex-interaction">
+<h3>Flame-Vortex interaction<a class="headerlink" href="#flame-vortex-interaction" title="Permalink to this headline">¶</a></h3>
+<p>The flame-vortex interaction test case provides a fundamental
+benchmark simulation to study interactions between the fluid flow and
+a flame in a controlled environment. In this simulation setup, a 2D
+flame front is initialized using profiles (velocity, species and
+temperature) from a 1-D premixed flame. Additionally, velocity field
+corresponding to a vortex field is superimposed using the Oseen vortex
+expression. This simulation is performed in an unsteady fashion with
+time evolution of flame area and stretch for varying ratios of vortex
+strength and laminar flame speed as the key metric for
+validation. Experimental data (<cite>Thiesset et. al, Proc. Combust. Inst. Volume 36,
+Issue 2, 2017, Pages 1843-1851</cite>) and data from a number of previously
+established simulation data will be used to validate PeleC.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Not yet done.</p>
+</div>
+</div>
+<div class="section" id="sandia-flame-d">
+<h3>Sandia Flame D<a class="headerlink" href="#sandia-flame-d" title="Permalink to this headline">¶</a></h3>
+<p>Flame D from the Sandia series of piloted methane/air turbulent jet
+flames (<cite>R. S. Barlow and J. H. Frank, Proc. Combust. Inst. Volume 27, 1998, Pages
+1087-1095</cite>) is a canonical case for assessment of nonpremixed
+combustion models for LES in the literature and at the International
+Workshop on Measurement and Computation of Turbulent Flames
+(TNF). Extensive measurements of product species and temperature were
+taken at several locations in the flame, providing a wealth of data
+against which simulations can be validated. For validation of LES
+models for nonpremixed combustion in PeleC, conditional means and
+variances of temperature and species at several axial locations will
+be compared.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Not yet done.</p>
+</div>
+</div>
+<div class="section" id="premixed-ignition-kernel-in-isotropic-turbulence">
+<h3>Premixed ignition kernel in isotropic turbulence<a class="headerlink" href="#premixed-ignition-kernel-in-isotropic-turbulence" title="Permalink to this headline">¶</a></h3>
+<p>This test case is based on a set of DNS of spherical premixed Jet-A
+fuel/air kernels in decaying isotropic turbulence performed at Sandia
+National Laboratories (<cite>A. Krisman, T. Lu, and J. H. Chen, National
+Combustion Meeting, 2017, Paper #2E04</cite>). This test case will be used for
+validation of LES premixed combustion models in PeleC. This case
+allows for a priori model evaluation of local predictions of filtered
+reaction rates as well as a posteriori comparisons of global
+quantities of interest (kernel radius over time, successful or failed
+ignition).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Not yet done.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="PelePhysics.html" class="btn btn-neutral float-right" title="PelePhysics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="LES.html" class="btn btn-neutral float-left" title="LES and Hybrid LES/DNS Support" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright AMReX Copyright (c) 2017, The Regents of the University of California, through Lawrence Berkeley National Laboratory and the Alliance for Sustainable Energy, LLC., through National Renewable Energy Laboratory (subject to receipt of any required approvals from the U.S. Dept. of Energy).  All rights reserved.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

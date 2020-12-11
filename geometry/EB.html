@@ -1,0 +1,630 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Geometry treatment in PeleC &mdash; PeleC 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="LES and Hybrid LES/DNS Support" href="../LES.html" />
+    <link rel="prev" title="Boundary Conditions" href="../BoundaryConditions.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> PeleC
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Equations.html">Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Algorithms.html">Numerical Treatment and Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../BoundaryConditions.html">Boundary Conditions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Geometry treatment in PeleC</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#embedded-boundary-representation">Embedded Boundary Representation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hybrid-divergence-and-redistribution">Hybrid Divergence and Redistribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#re-redistribution">Re-redistribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#date-structures-and-utility-functions">Date Structures and utility functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#applying-boundary-and-face-stencils">Applying boundary and face stencils</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#geometry-initialization">Geometry initialization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#geometryshop-and-implicit-functions">GeometryShop and Implicit Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#specifying-basic-geometries-in-input-files">Specifying basic geometries in input files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-complicated-geometries">Adding complicated geometries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#basic-work-iterator-for-for-eb-geometry">Basic work iterator for for EB geometry</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../LES.html">LES and Hybrid LES/DNS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../VandV.html">Correctness - Verification and Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PelePhysics.html">PelePhysics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../miscellaneous/miscellaneous.html">Miscellaneous Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../boxlib_bits.html">Development Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PeleC</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Geometry treatment in PeleC</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/geometry/EB.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <blockquote>
+<div></div></blockquote>
+<div class="section" id="geometry-treatment-in-pelec">
+<span id="eb"></span><h1>Geometry treatment in PeleC<a class="headerlink" href="#geometry-treatment-in-pelec" title="Permalink to this headline">¶</a></h1>
+<p>The treatment of geometric features that do not align along cartesian coordinate directions effectively reduces to
+determining the correct flux terms at cut-cell interfaces and subsequent update of divergence term in each cell.
+This involves the initialization and query of the necessary AMReX-provided data structures containing the
+geometry information, and computation of PeleC-specific advection and diffusion operators. The various steps in the
+process are:</p>
+<ol class="arabic simple">
+<li><p>Creation of a functional specification of the irregular geometry to embed in the uniform grid. This is done via exact
+function representations of the geometry or implicit functions.</p></li>
+<li><p>Construction of map of the (continuous) implicit representation of geometry onto the discrete mesh on all AMR levels.
+This will be a large, complex, distributed data structure.</p></li>
+<li><p>Communication of the subsets of this large data set to the local cores tasked with building the PeleC operators.</p></li>
+<li><p>Actual construction of the diffusion and advection components of the PeleC time advance.</p></li>
+</ol>
+<p>AMReX data structures and functions provide for the first 3 steps.
+Step 4 is implemented using a “method-of-lines” update within PeleC (see section <a class="reference internal" href="../Algorithms.html#mol"><span class="std std-ref">MOL</span></a>).</p>
+<div class="section" id="embedded-boundary-representation">
+<h2>Embedded Boundary Representation<a class="headerlink" href="#embedded-boundary-representation" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-default" id="id1">
+<span id="eb-cell-fig1"></span><a class="reference internal image-reference" href="../_images/EB_sample.png"><img alt="EB Cell" src="../_images/EB_sample.png" style="width: 400px;" /></a>
+<p class="caption"><span class="caption-number">4 </span><span class="caption-text">Embedded boundary representation of geometry</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<p>Geometry is treated in PeleC using an embedded boundary (EB) formulation, based on datastructures and algorithmic components provided by AMReX.   In the EB formalism, geometry is represented by volume fractions (<span class="math notranslate nohighlight">\(v_l\)</span>)
+and apertures (<span class="math notranslate nohighlight">\(A_l^k\)</span>) for each cell <span class="math notranslate nohighlight">\(l\)</span> that have faces <span class="math notranslate nohighlight">\(1,...,k,6\)</span>. See <a class="reference internal" href="#eb-f"><span class="std std-ref">Embedded boundary representation of geometry</span></a> for an illustration where the grey area represents the region excluded from the solution domain and the arrows represent fluxes. The fluid volume in a given cell is given by  (<span class="math notranslate nohighlight">\(V_l = v_l\,\,dx\,dy\,dz\)</span>); it should be noted that the grid spacing along each direction is the same in PeleC.</p>
+<div class="figure align-default" id="id2">
+<span id="eb-f"></span><a class="reference internal image-reference" href="../_images/EB_F.png"><img alt="EB Cell" src="../_images/EB_F.png" style="width: 200px;" /></a>
+<p class="caption"><span class="caption-number">5 </span><span class="caption-text">Embedded boundary representation of geometry</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-default" id="id3">
+<span id="eb-a"></span><a class="reference internal image-reference" href="../_images/EB_AVfrac.png"><img alt="EB Cell" src="../_images/EB_AVfrac.png" style="width: 200px;" /></a>
+<p class="caption"><span class="caption-number">6 </span><span class="caption-text">Embedded boundary representation of geometry</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+<p>The geometry components in AMReX are used in PeleC to implement a time-explicit integrator based on the method-of-lines.  For the advection and diffusion components of the PeleC time integrator, the time rate of change of the conserved fields, S, in cell <span class="math notranslate nohighlight">\(l\)</span> can be written as</p>
+<div class="math notranslate nohighlight">
+\[\frac{dS_l}{dt} = \nabla \cdot F\]</div>
+<p>where <span class="math notranslate nohighlight">\(F\)</span> is the intensive flux of <span class="math notranslate nohighlight">\(S\)</span> through the faces that bound the cell.</p>
+</div>
+<div class="section" id="hybrid-divergence-and-redistribution">
+<h2>Hybrid Divergence and Redistribution<a class="headerlink" href="#hybrid-divergence-and-redistribution" title="Permalink to this headline">¶</a></h2>
+<p id="hybdiv">A straightforward implemention of the finite-volume advance of intensive conserved fields is numerically unstable (this is the well-known “small cell issue”) due to presence of
+the fluid cell volume in the denominator of the conservative divergence (<span class="math notranslate nohighlight">\((DC)_l\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[(DC)_l = \frac{1}{V_l} \sum_{k_l} \left( F_k \cdot n_k A_k \right),\]</div>
+<p>where <span class="math notranslate nohighlight">\(k_l\)</span> is the number of regular and cut faces surrounding cell <span class="math notranslate nohighlight">\(l\)</span> and <span class="math notranslate nohighlight">\(F_k\)</span> is the intensive flux at the centroid of face <span class="math notranslate nohighlight">\(k\)</span>.  An alternative update takes the so-called “non-conservative” form, constructed using a weighted average of the conservative updates of neighboring cells:</p>
+<div class="math notranslate nohighlight">
+\[(DNC)_l = \frac{1}{\sum_{n_l}N_n V_l} \sum_{n_l}N_n V_n (DC)_n,\]</div>
+<p>where <span class="math notranslate nohighlight">\(n_l\)</span> is the number of cells in the <cite>neighborhood</cite> of cut cell <span class="math notranslate nohighlight">\(l\)</span>. <span class="math notranslate nohighlight">\(N_n\)</span> takes the value of 0 or 1 depending if cell <span class="math notranslate nohighlight">\(n\)</span> is connected to cell <span class="math notranslate nohighlight">\(l\)</span>. While this update is numerically stable, it does not discretely conserve the field quantities.  In PeleC, we use a hybrid update strategy, a weighted average of the two that is numerically stable and “maximally conservative” locally, without violating CFL constraints based on the regular cells:</p>
+<div class="math notranslate nohighlight">
+\[(HD)_l = v_l(DC)_l + (1-v_l)(DNC)_l.\]</div>
+<p>In order to maintain global conservation, the mass difference (we call the product of each conserved variable and cell volume as “mass”) between the hybrid divergence and conservative divergence is a correction that is distributed to neighboring cells at each timestep:</p>
+<div class="math notranslate nohighlight">
+\[\Delta_l^n = \frac{v_l(1-v_l)\left[(DC)_l - (DNC)_l\right]N_l^n W_l^n v_n^l}{\sum_{n_l}N_l^nW_l^nv_l^n}\]</div>
+<p>In PeleC, this neighborhood is obtained by the AMReX function <cite>get_neighbors</cite>, which identifies all cells within a single step in each coordinate direction that is connected to cell <span class="math notranslate nohighlight">\(l\)</span>. Two adjacent cells may be not connected if there is an embedded boundary section between them.</p>
+<p>The redistribution is applied as:</p>
+<div class="math notranslate nohighlight">
+\[(HD)_n^l = (HD)_n^l +  \frac{\Delta_l^n}{v_n^l},\]</div>
+<p>and the hybrid divergence is integrated using RK2.</p>
+<p>The weights for redistribution <span class="math notranslate nohighlight">\(W_l^n\)</span> can be set to any field in PeleC. We have found that setting the weights to the cell volumes is effective, while pure density weighting sometimes leads to stability issues when several very small cells share a neighborhood such as in a geometry corner.</p>
+<p>This procedure is implemented in the <cite>pc_fix_div_and_redistribute</cite> routine that performs four steps:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Recompute conservative divergence, DC, on cut cells…need DC in 2 grow cells for    final result</p></li>
+<li><p>Compute non-conservative and hybrid divergence, DNC and HD, and redistribution mass  dM in cut cells. We will need this in 1 grow cells (see below), so it depends on     having a conservative div in 2 grow cells</p></li>
+<li><p>Now that we finished computing HD and dM everywhere, it is safe to increment DC to   hold HD</p></li>
+<li><p>Redistribute dM - THIS REQUIRES THAT DC BE GOOD IN 1 GROW CELL</p></li>
+</ol>
+</div></blockquote>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">pc_fix_div_and_redistribute</span><span class="p">(</span><span class="n">BL_TO_FORTRAN_BOX</span><span class="p">(</span><span class="n">vbox</span><span class="p">),</span>
+                            <span class="n">sv_eb_bndry_geom</span><span class="p">[</span><span class="n">local_i</span><span class="p">].</span><span class="n">data</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">Ncut</span><span class="p">,</span>
+                            <span class="n">BL_TO_FORTRAN_ANYD</span><span class="p">(</span><span class="n">flag_fab</span><span class="p">),</span>
+                            <span class="n">D_DECL</span><span class="p">(</span><span class="n">BL_TO_FORTRAN_ANYD</span><span class="p">(</span><span class="n">flux_ec</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                                   <span class="n">BL_TO_FORTRAN_ANYD</span><span class="p">(</span><span class="n">flux_ec</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                                   <span class="n">BL_TO_FORTRAN_ANYD</span><span class="p">(</span><span class="n">flux_ec</span><span class="p">[</span><span class="mi">2</span><span class="p">])),</span>
+                            <span class="n">sv_eb_flux</span><span class="p">[</span><span class="n">local_i</span><span class="p">].</span><span class="n">dataPtr</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">Nflux</span><span class="p">,</span>
+                            <span class="n">BL_TO_FORTRAN_ANYD</span><span class="p">(</span><span class="n">Dterm</span><span class="p">),</span>
+                            <span class="n">BL_TO_FORTRAN_N_ANYD</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">wComp</span><span class="p">),</span>
+                            <span class="n">BL_TO_FORTRAN_ANYD</span><span class="p">(</span><span class="n">vfrac</span><span class="p">[</span><span class="n">mfi</span><span class="p">]),</span>
+                            <span class="o">&amp;</span><span class="n">VOL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">NUM_STATE</span><span class="p">,</span>
+                            <span class="o">&amp;</span><span class="n">as_crse</span><span class="p">,</span>
+                            <span class="n">BL_TO_FORTRAN_ANYD</span><span class="p">(</span><span class="o">*</span><span class="n">p_drho_as_crse</span><span class="p">),</span>
+                            <span class="n">BL_TO_FORTRAN_ANYD</span><span class="p">(</span><span class="o">*</span><span class="n">p_rrflag_as_crse</span><span class="p">),</span>
+                            <span class="o">&amp;</span><span class="n">as_fine</span><span class="p">,</span>
+                            <span class="n">BL_TO_FORTRAN_ANYD</span><span class="p">(</span><span class="n">dm_as_fine</span><span class="p">),</span>
+</pre></div>
+</div>
+<p>The arguments are the edge centered flux in the [x,y,z]-directions on the [x,y,z] faces, the array of geometry information for the cut cells for this FAB, the flux through the cut faces, and the hybrid divergence.</p>
+</div>
+<div class="section" id="re-redistribution">
+<h2>Re-redistribution<a class="headerlink" href="#re-redistribution" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-default" id="id4">
+<span id="eb-re-redist"></span><a class="reference internal image-reference" href="../_images/EB_re_redist.png"><img alt="EB Cell" src="../_images/EB_re_redist.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">7 </span><span class="caption-text">(a) an example situation with an EB spanning a coarse-fine boundary, (b) same situation as seen by the coarse level and (c) same situation as seen by the fine level. The cells with the dotted lines are ghost cells.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+<p>The redistribution of mass with the use of hybrid divergence method (see section <a class="reference internal" href="#hybdiv"><span class="std std-ref">Hybrid divergence</span></a>) leads
+to an accounting problem at coarse-fine interfaces that have an EB passing through them, as shown in <a class="reference internal" href="#eb-re-redist"><span class="std std-ref">re-redistribution figure</span></a> (a).
+The correct strategy will be to redistribute mass from the coarse mesh on the left side to the fine mesh on the right and vice-versa, when divergence is evaluated on the fly.
+This strategy is difficult to implement directly into the current algorithmic framework, because flux/residual calculation and time advance are done separately at
+each level with a ghost-cell treatment at coarse-fine boundaries. Therefore the mass distributed to and from ghost-cells need to be accounted and adjusted after each level has
+advanced a single time step, which we refer to as re-redistribution. Specifically, four different mass terms need to be accounted for:</p>
+<ul class="simple">
+<li><p>In <a class="reference internal" href="#eb-re-redist"><span class="std std-ref">re-redistribution figure</span></a> (b) the left-coarse-real-cell distributes mass to the right-coarse-ghost-cell. This needs to be captured and given to the right-fine-real-cells.</p></li>
+<li><p>In <a class="reference internal" href="#eb-re-redist"><span class="std std-ref">re-redistribution figure</span></a> (b) the right-coarse-ghost-cell distributes mass to the left-coarse-real-cell. This needs to be captured and removed from the left-coarse-real-cell update
+because the correct distributed mass has to come from the right-fine-real-cells.</p></li>
+<li><p>In <a class="reference internal" href="#eb-re-redist"><span class="std std-ref">re-redistribution figure</span></a> (c) the right-fine-real-cells distribute mass to the left-fine-ghost-cells. This needs to be captured and given to the left-coarse-real-cell.</p></li>
+<li><p>In <a class="reference internal" href="#eb-re-redist"><span class="std std-ref">re-redistribution figure</span></a> (c) the left-fine-ghost-cells distribute mass to the right-fine-real-cells. This needs to be captured and removed from the right-fine-real-cells update
+because the correct distributed mass has to come from the left-coarse-real-cell.</p></li>
+</ul>
+<p>The re-redistribution is implemented as a book-keeping step where the mass distributed are stored during MOL divergence calculation and given to the coarse and fine flux registers to reflux at
+the end of each time step. The re-redistribution is performed everytime the reflux function is called in post_timestep. More details regarding re-redistribuion are
+presented in <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0021999185711655">Pember et al.</a>.</p>
+</div>
+<div class="section" id="date-structures-and-utility-functions">
+<h2>Date Structures and utility functions<a class="headerlink" href="#date-structures-and-utility-functions" title="Permalink to this headline">¶</a></h2>
+<p>Several structures exist to store geometry dependent information. These are populated on creation of a new AMRLevel and stored in the PeleC object so that they are available for computation. These facilitate accessing the EB data from the fortran layer and have equivalent C++ struct and fortran types definitions so that they can be passed between the languages. The C++ struct definitions are in the file EBStencilTypes.H and the fortran type definitions are in the file EBStencilTypes_mod.F90 within the pelec_eb_stencil_types_module module. The datatypes are:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 73%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>C++ struct</p></th>
+<th class="head"><p>fortran type</p></th>
+<th class="head"><p>Contents</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>EBBoundaryGeom</p></td>
+<td><p>eb_bndry_geom</p></td>
+<td><p>Cut face normal, centroid, area, index into FAB</p></td>
+</tr>
+<tr class="row-odd"><td><p>EBBndrySten</p></td>
+<td><p>eb_bndry_sten</p></td>
+<td><p><span class="math notranslate nohighlight">\(3^3\)</span> matrix of weights to apply cell based stencil, BC value, index into FAB</p></td>
+</tr>
+<tr class="row-even"><td><p>FaceSten</p></td>
+<td><p>face_sten</p></td>
+<td><p><span class="math notranslate nohighlight">\(3^2\)</span> matrix of weights to apply face-based stencil</p></td>
+</tr>
+</tbody>
+</table>
+<p>Routines to fill and apply these as necessary can be found in the dimension specific files in e.g. Source/Src_3d/PeleC_init_eb_3d.f90 within the <cite>nbrsTest_nd_module</cite> module. An array of structures is created on level creation by copying data from the AMReX dense datastrcutures on a per-FAB basis as indicated in Figure <a class="reference internal" href="#eb-structs"><span class="std std-ref">Storage for sparse EB structures</span></a> .</p>
+<div class="figure align-default" id="id5">
+<span id="eb-structs"></span><a class="reference internal image-reference" href="../_images/EB_Struct.png"><img alt="EB Structure storage" src="../_images/EB_Struct.png" style="width: 500px;" /></a>
+<p class="caption"><span class="caption-number">8 </span><span class="caption-text">Storage for sparse EB structures</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
+<p>On creation of a new AMRLevel, data is cached from the <em>dense</em> AMReX structures in the <em>sparse</em> PeleC structures. For example, in <em>PeleC_init_eb.cpp</em> within the function initialize_eb2_structs():</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">pc_fill_sv_ebg</span><span class="p">(</span><span class="n">BL_TO_FORTRAN_BOX</span><span class="p">(</span><span class="n">tbox</span><span class="p">),</span>
+<span class="n">sv_eb_bndry_geom</span><span class="p">[</span><span class="n">iLocal</span><span class="p">].</span><span class="n">data</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">Ncut</span><span class="p">,</span>
+<span class="n">BL_TO_FORTRAN_ANYD</span><span class="p">((</span><span class="o">*</span><span class="n">volfrac</span><span class="p">)[</span><span class="n">mfi</span><span class="p">]),</span>
+<span class="n">BL_TO_FORTRAN_ANYD</span><span class="p">((</span><span class="o">*</span><span class="n">bndrycent</span><span class="p">)[</span><span class="n">mfi</span><span class="p">]),</span>
+<span class="n">D_DECL</span><span class="p">(</span><span class="n">BL_TO_FORTRAN_ANYD</span><span class="p">((</span><span class="o">*</span><span class="n">eb2areafrac</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="n">mfi</span><span class="p">]),</span>
+       <span class="n">BL_TO_FORTRAN_ANYD</span><span class="p">((</span><span class="o">*</span><span class="n">eb2areafrac</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="n">mfi</span><span class="p">]),</span>
+       <span class="n">BL_TO_FORTRAN_ANYD</span><span class="p">((</span><span class="o">*</span><span class="n">eb2areafrac</span><span class="p">[</span><span class="mi">2</span><span class="p">])[</span><span class="n">mfi</span><span class="p">])));</span>
+</pre></div>
+</div>
+<p>Where the argument FABS AMReX datastructures, e.g.:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">const</span> <span class="n">amrex</span><span class="o">::</span><span class="n">MultiFab</span><span class="o">*</span> <span class="n">volfrac</span><span class="p">;</span>
+<span class="k">const</span> <span class="n">amrex</span><span class="o">::</span><span class="n">MultiCutFab</span><span class="o">*</span> <span class="n">bndrycent</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">amrex</span><span class="o">::</span><span class="n">MultiCutFab</span><span class="o">*</span><span class="p">,</span> <span class="n">AMREX_SPACEDIM</span><span class="o">&gt;</span> <span class="n">eb2areafrac</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">amrex</span><span class="o">::</span><span class="n">MultiCutFab</span><span class="o">*</span><span class="p">,</span> <span class="n">AMREX_SPACEDIM</span><span class="o">&gt;</span> <span class="n">facecent</span><span class="p">;</span>
+
+<span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">ebfactory</span> <span class="o">=</span> <span class="k">dynamic_cast</span><span class="o">&lt;</span><span class="n">EBFArrayBoxFactory</span> <span class="k">const</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="n">Factory</span><span class="p">());</span>
+
+<span class="c1">// These are the data sources</span>
+<span class="n">volfrac</span> <span class="o">=</span> <span class="o">&amp;</span><span class="p">(</span><span class="n">ebfactory</span><span class="p">.</span><span class="n">getVolFrac</span><span class="p">());</span>
+<span class="n">bndrycent</span> <span class="o">=</span> <span class="o">&amp;</span><span class="p">(</span><span class="n">ebfactory</span><span class="p">.</span><span class="n">getBndryCent</span><span class="p">());</span>
+<span class="n">eb2areafrac</span> <span class="o">=</span> <span class="n">ebfactory</span><span class="p">.</span><span class="n">getAreaFrac</span><span class="p">();</span>
+<span class="n">facecent</span> <span class="o">=</span> <span class="n">ebfactory</span><span class="p">.</span><span class="n">getFaceCent</span><span class="p">();</span>
+</pre></div>
+</div>
+<div class="section" id="applying-boundary-and-face-stencils">
+<h3>Applying boundary and face stencils<a class="headerlink" href="#applying-boundary-and-face-stencils" title="Permalink to this headline">¶</a></h3>
+<p>When processing geometry cells, the cached datastructures can be applied efficiently, for example, to interpolate fluxes from face centers to face centroids in cut cells:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span>  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">idir</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">idir</span> <span class="o">&lt;</span> <span class="n">BL_SPACEDIM</span><span class="p">;</span> <span class="o">++</span><span class="n">idir</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kt">int</span> <span class="n">Nsten</span> <span class="o">=</span> <span class="n">flux_interp_stencil</span><span class="p">[</span><span class="n">idir</span><span class="p">][</span><span class="n">local_i</span><span class="p">].</span><span class="n">size</span><span class="p">();</span>
+      <span class="kt">int</span> <span class="n">in_place</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="k">const</span> <span class="n">Box</span> <span class="n">valid_interped_flux_box</span> <span class="o">=</span>
+      <span class="n">Box</span><span class="p">(</span><span class="n">amrex</span><span class="o">::</span><span class="n">grow</span><span class="p">(</span><span class="n">vbox</span><span class="p">,</span> <span class="mi">2</span><span class="p">)).</span><span class="n">surroundingNodes</span><span class="p">(</span><span class="n">idir</span><span class="p">);</span>
+      <span class="p">{</span>
+        <span class="n">BL_PROFILE</span><span class="p">(</span><span class="s">&quot;PeleC::pc_apply_face_stencil call&quot;</span><span class="p">);</span>
+        <span class="n">pc_apply_face_stencil</span><span class="p">(</span><span class="n">BL_TO_FORTRAN_BOX</span><span class="p">(</span><span class="n">valid_interped_flux_box</span><span class="p">),</span>
+                              <span class="n">BL_TO_FORTRAN_BOX</span><span class="p">(</span><span class="n">stencil_volume_box</span><span class="p">),</span>
+                              <span class="n">flux_interp_stencil</span><span class="p">[</span><span class="n">idir</span><span class="p">][</span><span class="n">local_i</span><span class="p">].</span><span class="n">data</span><span class="p">(),</span>
+                              <span class="o">&amp;</span><span class="n">Nsten</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">idir</span><span class="p">,</span>
+                              <span class="n">BL_TO_FORTRAN_ANYD</span><span class="p">(</span><span class="n">flux_ec</span><span class="p">[</span><span class="n">idir</span><span class="p">]),</span>
+                              <span class="n">BL_TO_FORTRAN_ANYD</span><span class="p">(</span><span class="n">flux_ec</span><span class="p">[</span><span class="n">idir</span><span class="p">]),</span>
+                              <span class="o">&amp;</span><span class="n">NUM_STATE</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">in_place</span><span class="p">);</span>
+     <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Other similar routines incldue:</p>
+<ul class="simple">
+<li><p>pc_apply_face_stencil</p></li>
+<li><p>pc_apply_eb_boundry_flux_stencil</p></li>
+<li><p>pc_apply_eb_boundry_visc_flux_stencil</p></li>
+<li><p>pc_fix_div_and_redistribute</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="geometry-initialization">
+<h2>Geometry initialization<a class="headerlink" href="#geometry-initialization" title="Permalink to this headline">¶</a></h2>
+<p>Creating an EB geometry also requires knowledge of the finest level that will be used so that geometries that ‘telescope’,
+i.e., coarser volume fractions are consistent with applying the coarsening operator to the finer volumes, can be created.
+To that end there is a global geometry creation step, facilitated by the <cite>initialize_EB2</cite> function, as well as a step that
+happens when a new AMRLevel is created. The latter happens by a call to  <cite>PeleC::initialize_eb2_structs</cite>  through <cite>PeleC::init_eb</cite>
+called from the PeleC constructor. Following construction of the geometry, the geometric information is
+copied into the structures described in the previous section and the various interpolation stencils are populated.</p>
+<p>Cartesian grid, embedded boundary (EB) methods are methods where the geometric description is formed by cutting a Cartesian
+mesh with surface of the geometry.  AMReX’s methods to handle EB geometry information, and PeleC’s treatment of the
+EB aware update could use many possible sources for geometric description. The necessary information is, on a per-cell basis:</p>
+<ul class="simple">
+<li><p>Apertures for faces intersected by cut cells,</p></li>
+<li><p>cut cell volumes that ‘telescope’, that is, volumes at a coarser level are consistent with averaging the volumes from finer levels,</p></li>
+<li><p>connectivity indicating which neighbor cells are connected to a given cell, and</p></li>
+<li><p>coordinates of cell and face centroids.</p></li>
+</ul>
+<p>Additionally, the algorithms ultimately require surface normals, but these can be trivially recomputed from the aperture.</p>
+<div class="section" id="geometryshop-and-implicit-functions">
+<h3>GeometryShop and Implicit Functions<a class="headerlink" href="#geometryshop-and-implicit-functions" title="Permalink to this headline">¶</a></h3>
+<p>One of the greatest advantages of EB technology is that grid generation is robust and fast and can be done to any accuracy
+as described by <a class="reference external" href="http://dx.doi.org/10.2140/camcos.2015.10.83">Schwartz et al.</a> The foundation class that AMReX uses for
+geometry generation is called <a class="reference internal" href="amrex_geometry.html#geom"><span class="std std-ref">GeometryShop</span></a>. This class is used to initialize geometric information
+and associated connectivity graph stored in a distributed database class <cite>EBIndexSpace</cite>.
+Historically, the <cite>EBIndexSpace</cite> database was developed to be used throughout a calculation.
+Here, we use it only to populate datastructures that can be accessed efficiently in the patterns
+representative of the Pele motivating problem space.</p>
+<blockquote>
+<div><p>Given an implicit function <span class="math notranslate nohighlight">\(I\)</span>, <code class="docutils literal notranslate"><span class="pre">GeometryShop</span></code> interprets the surface upon which
+<span class="math notranslate nohighlight">\(I(\mathbf{x}) = 0\)</span> as the surface with which to cut the grid cells.
+<code class="docutils literal notranslate"><span class="pre">GeometryShop</span></code> interprets the positive regions of the implicit function (<span class="math notranslate nohighlight">\(\mathbf{x}: I(\mathbf{x}) &gt; 0\)</span>)
+as covered by the geometry and negative regions (<span class="math notranslate nohighlight">\(\mathbf{x}: I(\mathbf{x}) &lt; 0\)</span>) as part of  the solution domain.
+For example, if one defines her implicit function <span class="math notranslate nohighlight">\(S\)</span> as</p>
+</div></blockquote>
+<p>the solution domain would be the interior of a sphere of radius <span class="math notranslate nohighlight">\(R\)</span>. Reverse the sign of <span class="math notranslate nohighlight">\(S\)</span> and the solution domain would be the exterior of the sphere. More details are available <a class="reference external" href="https://amrex-codes.github.io/amrex/docs_html/EB.html?highlight=geometryshop#initializing-the-geometric-database">here</a>.</p>
+</div>
+<div class="section" id="specifying-basic-geometries-in-input-files">
+<h3>Specifying basic geometries in input files<a class="headerlink" href="#specifying-basic-geometries-in-input-files" title="Permalink to this headline">¶</a></h3>
+<p>There are several basic geometries that are available in AMReX that can be easily specified in the input file, some of which are shown below:</p>
+<ul class="simple">
+<li><p><em>Plane</em>    - needs a point (plane_point) and normal (plane_normal).</p></li>
+<li><p><em>Sphere</em>   - needs center (sphere_center), radius (sphere_radius) and fluid inside/outside flag (sphere_has_fluid_inside).</p></li>
+<li><p><em>Cylinder</em> - needs center (cylinder_center), radius (cylinder_radius), height (cylinder_height), direction (cylinder_direction) and fluid inside/outside flag (cylinder_has_fluid_inside).</p></li>
+<li><p><em>Box</em>      - needs the lower corner (box_lo), upper corner (box_hi) and fluid inside/outside flag (box_has_fluid_inside). The box is aligned along coordinate directions.</p></li>
+<li><p><em>Spline</em>   - needs a vector of points to create a 2D function that is a combination of spline and line elements. Currently, this geometry does not have a user interface
+from the inputs file, but can be used within Pelec_init_eb.cpp with hard coded points. see example in section <a class="reference internal" href="geometry_init.html#complexgeom"><span class="std std-ref">Complicated geometries`</span></a>/</p></li>
+</ul>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>eb2.use_eb2 = 1
+eb2.geom_type = box
+eb2.box_lo =  -2.0  -2.0 -2.0
+eb2.box_hi =   2.0   2.0  2.0
+eb2.box_has_fluid_inside = 0
+</pre></div>
+</div>
+<p>To specify an external flow sphere geometry, add the following lines to the inputs file:</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>eb2.use_eb2 = 1
+eb2.geom_type = sphere
+eb2.sphere_radius = 0.5
+eb2.sphere_center = 2.0 2.0  2.0
+eb2.sphere_has_fluid_inside = 0
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-complicated-geometries">
+<h3>Adding complicated geometries<a class="headerlink" href="#adding-complicated-geometries" title="Permalink to this headline">¶</a></h3>
+<p id="complexgeom">Geometries beyond the set described above can be built using a combination of basic geometries and EB transformation functions in AMReX.
+It should be noted that building a generic geometry from a user-defined discretized surface (like STL files)  is currently being developed, nonetheless
+engineering relevant geometries can be achieved with the fundamental geometries and transformations.</p>
+<p>Some of the relevant transformation handles in AMReX are:</p>
+<ul class="simple">
+<li><p><em>Intersection</em> - find the common region between implicit functions (see AMReX_EB2_IF_Intersection.cpp)</p></li>
+<li><p><em>Union</em>        - find the union of implicit functions (see AMReX_EB2_IF_Union.cpp)</p></li>
+<li><p><em>Complement</em>   - invert an implicit function, i.e. make fluid that is inside to outside. (see AMReX_EB2_IF_Complement.cpp)</p></li>
+<li><p><em>Translation</em> - translate an implicit function (see AMReX_EB2_IF_Translation.cpp)</p></li>
+<li><p><em>Lathe</em>       - creates a 3D implicit function from a 2D function by revolving about the z axis (see AMReX_EB2_IF_Lathe.cpp)</p></li>
+<li><p><em>Extrusion</em>   - creates a 3D implicit function from a 2D function by translating along the z axis (see AMReX_EB2_IF_Extrusion.cpp)</p></li>
+</ul>
+<p>The user can copy the file “PeleC_init_eb.cpp” from the Source and add it to his/her test case after which a new geometry can be added in initialize_EB2
+function. An example of adding a piston-bowl geometry (see <a class="reference internal" href="geometry_init.html#eb-pistonbowl"><span class="std std-ref">An example geometry of piston-bowl created using basic geometries.</span></a>)
+that uses splines, cylinder, lathe and union transform, is shown below.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">geom_type</span> <span class="o">==</span> <span class="s">&quot;Piston-Cylinder&quot;</span><span class="p">)</span> <span class="p">{</span>
+
+<span class="c1">//spline IF object</span>
+<span class="n">EB2</span><span class="o">::</span><span class="n">SplineIF</span> <span class="n">Piston</span><span class="p">;</span>
+
+<span class="c1">// array of points</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">amrex</span><span class="o">::</span><span class="n">RealVect</span><span class="o">&gt;</span> <span class="n">splpts</span><span class="p">;</span>
+
+<span class="n">amrex</span><span class="o">::</span><span class="n">RealVect</span> <span class="n">p</span><span class="p">;</span>
+<span class="c1">// fill array of points</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">amrex</span><span class="o">::</span><span class="n">RealVect</span><span class="p">(</span><span class="n">D_DECL</span><span class="p">(</span><span class="mf">36.193</span><span class="o">*</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">7.8583</span><span class="o">*</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">));</span>
+<span class="n">spltpts</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">amrex</span><span class="o">::</span><span class="n">RealVect</span><span class="p">(</span><span class="n">D_DECL</span><span class="p">(</span><span class="mf">35.924</span><span class="o">*</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">7.7881</span><span class="o">*</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">));</span>
+<span class="n">splpts</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+<span class="p">.</span>
+<span class="p">.</span>
+<span class="p">.</span>
+<span class="p">.</span>
+
+<span class="c1">//add to spline elements in splineIF</span>
+<span class="n">Piston</span><span class="p">.</span><span class="n">addSplineElement</span><span class="p">(</span><span class="n">splpts</span><span class="p">);</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">amrex</span><span class="o">::</span><span class="n">RealVect</span><span class="o">&gt;</span> <span class="n">lnpts</span><span class="p">;</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">amrex</span><span class="o">::</span><span class="n">RealVect</span><span class="p">(</span><span class="n">D_DECL</span><span class="p">(</span><span class="mf">22.358</span><span class="o">*</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">-7.6902</span><span class="o">*</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">));</span>
+<span class="n">lnpts</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">amrex</span><span class="o">::</span><span class="n">RealVect</span><span class="p">(</span><span class="n">D_DECL</span><span class="p">(</span><span class="mf">1.9934</span><span class="o">*</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">3.464</span><span class="o">*</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">));</span>
+<span class="n">lnpts</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+<span class="p">.</span>
+<span class="p">.</span>
+<span class="p">.</span>
+<span class="p">.</span>
+
+<span class="c1">//add to straight line elements in splineIF</span>
+<span class="n">Piston</span><span class="p">.</span><span class="n">addLineElement</span><span class="p">(</span><span class="n">lnpts</span><span class="p">);</span>
+
+<span class="c1">//create a cylinder</span>
+<span class="n">EB2</span><span class="o">::</span><span class="n">CylinderIF</span> <span class="n">cylinder</span><span class="p">(</span><span class="mf">48.0</span><span class="o">*</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">70.0</span><span class="o">*</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">{</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">-10.0</span><span class="o">*</span><span class="mf">0.1</span><span class="p">},</span> <span class="nb">true</span><span class="p">);</span>
+
+<span class="c1">//revolve the spline IF</span>
+<span class="k">auto</span> <span class="n">revolvePiston</span>  <span class="o">=</span> <span class="n">EB2</span><span class="o">::</span><span class="n">lathe</span><span class="p">(</span><span class="n">Piston</span><span class="p">);</span>
+
+<span class="c1">//make a union</span>
+<span class="k">auto</span> <span class="n">PistonCylinder</span> <span class="o">=</span> <span class="n">EB2</span><span class="o">::</span><span class="n">makeUnion</span><span class="p">(</span><span class="n">revolvePiston</span><span class="p">,</span> <span class="n">cylinder</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">gshop</span> <span class="o">=</span> <span class="n">EB2</span><span class="o">::</span><span class="n">makeShop</span><span class="p">(</span><span class="n">PistonCylinder</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="figure align-default" id="id6">
+<span id="eb-pistonbowl"></span><a class="reference internal image-reference" href="../_images/EB_PistonBowl.png"><img alt="EB Cell" src="../_images/EB_PistonBowl.png" style="width: 400px;" /></a>
+<p class="caption"><span class="caption-number">9 </span><span class="caption-text">An example geometry of piston-bowl created using basic geometries.</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+</div>
+<div class="section" id="basic-work-iterator-for-for-eb-geometry">
+<h2>Basic work iterator for for EB geometry<a class="headerlink" href="#basic-work-iterator-for-for-eb-geometry" title="Permalink to this headline">¶</a></h2>
+<p>First fillpatch</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="n">FillPatchIterator</span> <span class="nf">fpi</span><span class="p">(</span><span class="o">*</span><span class="n">this</span><span class="p">,</span> <span class="n">coeff_cc</span><span class="p">,</span> <span class="n">nGrowTr</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">State_Type</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">NUM_STATE</span><span class="p">);</span>
+  <span class="n">MultiFab</span><span class="o">&amp;</span> <span class="n">S</span> <span class="o">=</span> <span class="n">fpi</span><span class="p">.</span><span class="n">get_mf</span><span class="p">();</span>
+
+  <span class="n">cons_to_prim</span><span class="p">(</span><span class="n">S</span><span class="p">,</span><span class="n">Q</span><span class="p">,</span><span class="n">Qaux</span><span class="p">);</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">level</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="k">const</span> <span class="n">BoxArray</span><span class="o">&amp;</span> <span class="n">crse_grids</span> <span class="o">=</span> <span class="n">getLevel</span><span class="p">(</span><span class="n">level</span><span class="mi">-1</span><span class="p">).</span><span class="n">boxArray</span><span class="p">();</span>
+    <span class="k">const</span> <span class="n">DistributionMapping</span><span class="o">&amp;</span> <span class="n">dmc</span> <span class="o">=</span> <span class="n">getLevel</span><span class="p">(</span><span class="n">level</span><span class="mi">-1</span><span class="p">).</span><span class="n">DistributionMap</span><span class="p">();</span>
+    <span class="n">MultiFab</span> <span class="nf">Sc</span><span class="p">(</span><span class="n">crse_grids</span><span class="p">,</span><span class="n">dmc</span><span class="p">,</span><span class="n">NUM_STATE</span><span class="p">,</span><span class="n">nGrowTr</span><span class="p">);</span>
+    <span class="n">FillPatch</span><span class="p">(</span><span class="n">getLevel</span><span class="p">(</span><span class="n">level</span><span class="mi">-1</span><span class="p">),</span><span class="n">Sc</span><span class="p">,</span><span class="n">nGrowTr</span><span class="p">,</span><span class="n">time</span><span class="p">,</span><span class="n">State_Type</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">NUM_STATE</span><span class="p">);</span>
+
+    <span class="n">Qc</span><span class="p">.</span><span class="n">define</span><span class="p">(</span><span class="n">crse_grids</span><span class="p">,</span><span class="n">dmc</span><span class="p">,</span><span class="n">QVAR</span><span class="p">,</span><span class="n">nGrowTr</span><span class="p">);</span>
+    <span class="n">Qcaux</span><span class="p">.</span><span class="n">define</span><span class="p">(</span><span class="n">crse_grids</span><span class="p">,</span><span class="n">dmc</span><span class="p">,</span><span class="n">NQAUX</span><span class="o">&gt;</span><span class="mi">0</span><span class="o">?</span><span class="nl">NQAUX</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="n">nGrowTr</span><span class="p">);</span>
+    <span class="n">cons_to_prim</span><span class="p">(</span><span class="n">Sc</span><span class="p">,</span><span class="n">Qc</span><span class="p">,</span><span class="n">Qcaux</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Then iterate over MultiFabs</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">EBFArrayBox</span><span class="o">&amp;</span> <span class="n">feb</span> <span class="o">=</span> <span class="n">static_cast</span><span class="o">&lt;</span><span class="n">EBFArrayBox</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="n">Q</span><span class="p">[</span><span class="n">mfi</span><span class="p">]);</span>
+<span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">flag_fab</span> <span class="o">=</span> <span class="n">feb</span><span class="p">.</span><span class="n">getEBCellFlagFab</span><span class="p">();</span>
+<span class="n">FabType</span> <span class="n">typ</span> <span class="o">=</span> <span class="n">flag_fab</span><span class="p">.</span><span class="n">getType</span><span class="p">(</span><span class="n">cbox</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">typ</span> <span class="o">==</span> <span class="n">FabType</span><span class="o">::</span><span class="n">covered</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">typ</span> <span class="o">==</span> <span class="n">FabType</span><span class="o">::</span><span class="n">singlevalued</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">pc_compute_tangential_vel_derivs_eb</span><span class="p">(</span><span class="n">cbox</span><span class="p">.</span><span class="n">loVect</span><span class="p">(),</span> <span class="n">cbox</span><span class="p">.</span><span class="n">hiVect</span><span class="p">(),</span>
+                                      <span class="n">BL_TO_FORTRAN_3D</span><span class="p">(</span><span class="n">Q</span><span class="p">[</span><span class="n">mfi</span><span class="p">]),</span>
+                                      <span class="n">BL_TO_FORTRAN_3D</span><span class="p">(</span><span class="n">tander_ec</span><span class="p">[</span><span class="n">d</span><span class="p">]),</span>
+                                      <span class="n">BL_TO_FORTRAN_ANYD</span><span class="p">(</span><span class="n">flag_fab</span><span class="p">),</span>
+                                      <span class="n">geom</span><span class="p">.</span><span class="n">CellSize</span><span class="p">(),</span><span class="o">&amp;</span><span class="n">d</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">typ</span> <span class="o">==</span> <span class="n">FabType</span><span class="o">::</span><span class="n">multivalued</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">amrex</span><span class="o">::</span><span class="n">Abort</span><span class="p">(</span><span class="s">&quot;multi-valued eb tangential derivatives to be implemented&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="k">else</span>
+<span class="p">{</span>
+  <span class="n">pc_compute_tangential_vel_derivs</span><span class="p">(</span><span class="n">cbox</span><span class="p">.</span><span class="n">loVect</span><span class="p">(),</span> <span class="n">cbox</span><span class="p">.</span><span class="n">hiVect</span><span class="p">(),</span>
+                                   <span class="n">BL_TO_FORTRAN_3D</span><span class="p">(</span><span class="n">Q</span><span class="p">[</span><span class="n">mfi</span><span class="p">]),</span>
+                                   <span class="n">BL_TO_FORTRAN_3D</span><span class="p">(</span><span class="n">tander_ec</span><span class="p">[</span><span class="n">d</span><span class="p">]),</span>
+                                   <span class="n">geom</span><span class="p">.</span><span class="n">CellSize</span><span class="p">(),</span><span class="o">&amp;</span><span class="n">d</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../LES.html" class="btn btn-neutral float-right" title="LES and Hybrid LES/DNS Support" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../BoundaryConditions.html" class="btn btn-neutral float-left" title="Boundary Conditions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright AMReX Copyright (c) 2017, The Regents of the University of California, through Lawrence Berkeley National Laboratory and the Alliance for Sustainable Energy, LLC., through National Renewable Energy Laboratory (subject to receipt of any required approvals from the U.S. Dept. of Energy).  All rights reserved.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

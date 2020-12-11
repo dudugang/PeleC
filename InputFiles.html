@@ -1,0 +1,373 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Input Files and Controls &mdash; PeleC 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> PeleC
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Equations.html">Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Algorithms.html">Numerical Treatment and Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BoundaryConditions.html">Boundary Conditions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geometry/EB.html">Geometry treatment in PeleC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LES.html">LES and Hybrid LES/DNS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VandV.html">Correctness - Verification and Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PelePhysics.html">PelePhysics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="miscellaneous/miscellaneous.html">Miscellaneous Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boxlib_bits.html">Development Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PeleC</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Input Files and Controls</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/InputFiles.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="input-files-and-controls">
+<h1>Input Files and Controls<a class="headerlink" href="#input-files-and-controls" title="Permalink to this headline">¶</a></h1>
+<p>The input file specified on the command line is a free-format text file, one entry per row, that specifies input data processed by the AMReX <code class="docutils literal notranslate"><span class="pre">ParmParse</span></code> module.</p>
+<p>This file needs to specified along with the executable as an <cite>argv</cite> option, for example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mpirun</span> <span class="o">-</span><span class="n">np</span> <span class="mi">64</span> <span class="o">./</span><span class="n">Pele2d</span><span class="o">.</span><span class="n">xxx</span><span class="p">,</span><span class="n">yyy</span><span class="o">.</span><span class="n">ex</span> <span class="n">inputs</span>
+</pre></div>
+</div>
+<p>Also, any entry that can be specified in the inputs file can also be specified on the command line; values specified on the command line override values in the inputs file, e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mpirun</span> <span class="o">-</span><span class="n">np</span> <span class="mi">64</span> <span class="o">./</span><span class="n">Pele2d</span><span class="o">.</span><span class="n">gnu</span><span class="o">.</span><span class="n">DEBUG</span><span class="o">.</span><span class="n">MPI</span><span class="o">.</span><span class="n">ex</span> <span class="n">inputs</span> <span class="n">amr</span><span class="o">.</span><span class="n">restart</span><span class="o">=</span><span class="n">sod_x_chk0030</span> <span class="n">pelec</span><span class="o">.</span><span class="n">riemann_solver</span><span class="o">=</span><span class="mi">3</span>
+</pre></div>
+</div>
+<p>The available options are divided into groups: those that control primarily AMReX are prefaced with <cite>amr.</cite> while those that are specific to Pele are prefaced with <cite>pelec.</cite>.</p>
+<p>A typical input file looks something like the example below; a full list of Pele-specific input parameters are in <cite>PeleC/Source/_cpp_parameters</cite>.
+These parameters, once read, are available in the <cite>PeleC</cite> object for use from c++ and are also copied to the module <cite>prob_params_module</cite> for use in FORTRAN.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># ------------------  INPUTS TO MAIN PROGRAM  -------------------</span>
+<span class="c1">#absolute stop time for the simulation</span>
+<span class="n">stop_time</span> <span class="o">=</span> <span class="mi">6</span>
+
+<span class="c1">#maximum number of time steps at base AMR level</span>
+<span class="n">max_step</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="c1"># ---------------------------------------------------------------</span>
+
+<span class="c1">#------------------------</span>
+<span class="c1"># PROBLEM SIZE &amp; GEOMETRY</span>
+<span class="c1"># -----------------------</span>
+
+<span class="c1">#flag for periodicity (here x direction is periodic)</span>
+<span class="n">geometry</span><span class="o">.</span><span class="n">is_periodic</span> <span class="o">=</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span>
+
+<span class="c1">#0 =&gt; cart, 1 =&gt; RZ  2=&gt;spherical</span>
+<span class="n">geometry</span><span class="o">.</span><span class="n">coord_sys</span>   <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1">#coordinates of domain&#39;s lower corner</span>
+<span class="n">geometry</span><span class="o">.</span><span class="n">prob_lo</span>     <span class="o">=</span>   <span class="o">-</span><span class="mf">0.3</span>     <span class="mf">0.0</span>   <span class="mf">0.0</span>
+
+<span class="c1">#coordinates of domain&#39;s upper corner</span>
+<span class="n">geometry</span><span class="o">.</span><span class="n">prob_hi</span>     <span class="o">=</span>    <span class="mf">0.3</span>     <span class="mf">0.3</span>   <span class="mf">0.15</span>
+
+<span class="c1">#number of cells along each direction at base level (note: dx=dy=dz)</span>
+<span class="n">amr</span><span class="o">.</span><span class="n">n_cell</span>           <span class="o">=</span>    <span class="mi">128</span>     <span class="mi">64</span>    <span class="mi">32</span>
+<span class="c1"># ---------------------------------------------------------------</span>
+
+<span class="c1"># ---------------------------------------------------------------</span>
+<span class="n">PeleC</span> <span class="n">specific</span> <span class="n">inputs</span>
+<span class="c1"># ---------------------------------------------------------------</span>
+
+<span class="c1"># 0: Collela, Glaz and Ferguson (default)</span>
+<span class="c1"># 1: Collela and Glaz</span>
+<span class="c1"># 2: HLLC</span>
+<span class="n">pelec</span><span class="o">.</span><span class="n">riemann_solver</span>    <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;  BC KEYWORDS &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</span>
+<span class="c1"># Interior, UserBC, Symmetry, SlipWall, NoSlipWall</span>
+<span class="c1"># &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;  BC KEYWORDS &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</span>
+
+<span class="c1">#boundary condition at the lower face of each coordinate direction</span>
+<span class="n">pelec</span><span class="o">.</span><span class="n">lo_bc</span>       <span class="o">=</span>  <span class="s2">&quot;Interior&quot;</span>  <span class="s2">&quot;UserBC&quot;</span>  <span class="s2">&quot;SlipWall&quot;</span>
+
+<span class="c1">#boundary condition at the upper face of each coordinate direction</span>
+<span class="n">pelec</span><span class="o">.</span><span class="n">hi_bc</span>       <span class="o">=</span>  <span class="s2">&quot;Interior&quot;</span>  <span class="s2">&quot;UserBC&quot;</span>  <span class="s2">&quot;SlipWall&quot;</span>
+
+<span class="c1">#------------------------</span>
+<span class="c1"># TIME STEP CONTROL</span>
+<span class="c1">#------------------------</span>
+
+<span class="n">pelec</span><span class="o">.</span><span class="n">cfl</span>            <span class="o">=</span> <span class="mf">0.5</span>     <span class="c1"># cfl number for hyperbolic system</span>
+<span class="n">pelec</span><span class="o">.</span><span class="n">init_shrink</span>    <span class="o">=</span> <span class="mf">0.3</span>     <span class="c1"># first timestep is scaled by this factor</span>
+<span class="n">pelec</span><span class="o">.</span><span class="n">change_max</span>     <span class="o">=</span> <span class="mf">1.1</span>     <span class="c1"># maximum factor by which timestep can increase</span>
+<span class="n">pelec</span><span class="o">.</span><span class="n">dt_cutoff</span>      <span class="o">=</span> <span class="mf">5.e-20</span>  <span class="c1"># level 0 timestep below which we halt</span>
+
+<span class="c1">#------------------------</span>
+<span class="c1"># WHICH PHYSICS</span>
+<span class="c1">#------------------------</span>
+
+<span class="n">pelec</span><span class="o">.</span><span class="n">do_hydro</span> <span class="o">=</span> <span class="mi">1</span>               <span class="c1"># enable hyperbolic term</span>
+<span class="n">pelec</span><span class="o">.</span><span class="n">do_mol_AD</span> <span class="o">=</span> <span class="mi">1</span>              <span class="c1"># use method of lines (MOL)</span>
+<span class="n">pelec</span><span class="o">.</span><span class="n">do_react</span> <span class="o">=</span> <span class="mi">0</span>               <span class="c1"># enable chemical reactions</span>
+<span class="n">pelec</span><span class="o">.</span><span class="n">ppm_type</span> <span class="o">=</span> <span class="mi">2</span>               <span class="c1"># piecewise parabolic reconstruction type</span>
+<span class="n">pelec</span><span class="o">.</span><span class="n">allow_negative_energy</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># flag to allow negative internal energy</span>
+<span class="n">pelec</span><span class="o">.</span><span class="n">diffuse_temp</span> <span class="o">=</span> <span class="mi">0</span>           <span class="c1"># enable thermal diffusion</span>
+<span class="n">pelec</span><span class="o">.</span><span class="n">diffuse_vel</span>  <span class="o">=</span> <span class="mi">0</span>           <span class="c1"># enable viscous diffusion</span>
+<span class="n">pelec</span><span class="o">.</span><span class="n">diffuse_spec</span> <span class="o">=</span> <span class="mi">0</span>           <span class="c1"># enable species diffusion</span>
+
+<span class="c1">#------------------------</span>
+<span class="c1"># DIAGNOSTICS &amp; VERBOSITY</span>
+<span class="c1">#------------------------</span>
+
+<span class="c1"># coarse time steps between computing integral of</span>
+<span class="c1"># conserved variables in the  domain</span>
+<span class="c1"># these values should stabilize at steady state</span>
+<span class="n">pelec</span><span class="o">.</span><span class="n">sum_interval</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">pelec</span><span class="o">.</span><span class="n">v</span>            <span class="o">=</span> <span class="mi">1</span>        <span class="c1"># verbosity in PeleC cpp files</span>
+<span class="n">amr</span><span class="o">.</span><span class="n">v</span>              <span class="o">=</span> <span class="mi">1</span>        <span class="c1"># verbosity in Amr.cpp</span>
+<span class="c1">#amr.grid_log       = grdlog  # name of grid logging file</span>
+<span class="c1"># ---------------------------------------------------------------</span>
+
+<span class="c1"># ---------------------------------------------------------------</span>
+<span class="n">AMR</span> <span class="n">specific</span> <span class="n">inputs</span>
+<span class="c1"># ---------------------------------------------------------------</span>
+
+<span class="c1">#------------------------</span>
+<span class="c1"># REFINEMENT / REGRIDDING</span>
+<span class="c1">#------------------------</span>
+
+<span class="n">amr</span><span class="o">.</span><span class="n">max_level</span>       <span class="o">=</span> <span class="mi">2</span>       <span class="c1"># maximum level number allowed</span>
+<span class="n">amr</span><span class="o">.</span><span class="n">ref_ratio</span>       <span class="o">=</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">2</span> <span class="c1"># refinement ratio across levels</span>
+<span class="n">amr</span><span class="o">.</span><span class="n">regrid_int</span>      <span class="o">=</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">2</span> <span class="c1"># how often to regrid</span>
+<span class="n">amr</span><span class="o">.</span><span class="n">blocking_factor</span> <span class="o">=</span> <span class="mi">8</span>       <span class="c1"># block factor in grid generation</span>
+<span class="n">amr</span><span class="o">.</span><span class="n">max_grid_size</span>   <span class="o">=</span> <span class="mi">64</span>      <span class="c1"># maximum number of cells per box along x,y,z</span>
+
+<span class="c1">#specify species name as flame tracer for</span>
+<span class="c1">#refinement purposes</span>
+<span class="n">pelec</span><span class="o">.</span><span class="n">flame_trac_name</span> <span class="o">=</span> <span class="n">HO2</span>
+
+<span class="c1">#------------------------</span>
+<span class="c1"># CHECKPOINT FILES</span>
+<span class="c1">#------------------------</span>
+
+<span class="n">amr</span><span class="o">.</span><span class="n">checkpoint_files_output</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">amr</span><span class="o">.</span><span class="n">check_file</span>              <span class="o">=</span> <span class="n">chk</span>    <span class="c1"># root name of checkpoint/restart file</span>
+<span class="n">amr</span><span class="o">.</span><span class="n">check_int</span>               <span class="o">=</span> <span class="mi">500</span>    <span class="c1"># number of timesteps between checkpoints</span>
+
+<span class="c1">#------------------------</span>
+<span class="c1"># PLOTFILES</span>
+<span class="c1">#------------------------</span>
+
+<span class="n">amr</span><span class="o">.</span><span class="n">plot_files_output</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">amr</span><span class="o">.</span><span class="n">plot_file</span>         <span class="o">=</span> <span class="n">plt</span>     <span class="c1"># root name of plotfile</span>
+<span class="n">amr</span><span class="o">.</span><span class="n">plot_int</span>          <span class="o">=</span> <span class="mi">100</span>     <span class="c1"># number of timesteps between plotfiles</span>
+
+<span class="c1">#pick which all derived variables to plot</span>
+<span class="n">amr</span><span class="o">.</span><span class="n">derive_plot_vars</span>  <span class="o">=</span> <span class="n">pressure</span> <span class="n">x_velocity</span> <span class="n">y_velocity</span>
+
+<span class="c1"># probin filename that has tagging and other namelists</span>
+<span class="n">amr</span><span class="o">.</span><span class="n">probin_file</span> <span class="o">=</span> <span class="n">probin</span>
+<span class="c1"># ---------------------------------------------------------------</span>
+
+<span class="c1"># ---------------------------------------------------------------</span>
+<span class="n">Embedded</span> <span class="n">boundary</span> <span class="p">(</span><span class="n">EB</span><span class="p">)</span> <span class="n">inputs</span>
+<span class="c1"># ---------------------------------------------------------------</span>
+
+<span class="n">pelec</span><span class="o">.</span><span class="n">eb_isothermal</span> <span class="o">=</span> <span class="mi">1</span>     <span class="c1"># isothermal wall at EB</span>
+<span class="n">pelec</span><span class="o">.</span><span class="n">eb_boundary_T</span> <span class="o">=</span> <span class="mf">300.</span>  <span class="c1"># EB wall temperature</span>
+<span class="n">eb_verbosity</span> <span class="o">=</span> <span class="mi">1</span>            <span class="c1"># verbosity of EB data</span>
+
+
+<span class="c1">#------------------------</span>
+<span class="c1"># EB geometry</span>
+<span class="c1">#------------------------</span>
+
+<span class="n">eb2</span><span class="o">.</span><span class="n">geom_type</span> <span class="o">=</span> <span class="n">sphere</span>
+<span class="n">eb2</span><span class="o">.</span><span class="n">sphere_radius</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">eb2</span><span class="o">.</span><span class="n">sphere_center</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="mf">0.15</span> <span class="mf">0.075</span>
+<span class="n">eb2</span><span class="o">.</span><span class="n">sphere_has_fluid_inside</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># ---------------------------------------------------------------</span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright AMReX Copyright (c) 2017, The Regents of the University of California, through Lawrence Berkeley National Laboratory and the Alliance for Sustainable Energy, LLC., through National Renewable Energy Laboratory (subject to receipt of any required approvals from the U.S. Dept. of Energy).  All rights reserved.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

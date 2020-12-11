@@ -1,0 +1,265 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>C10. Hagen–Poiseuille flow &mdash; PeleC 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> PeleC
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Equations.html">Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Algorithms.html">Numerical Treatment and Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../BoundaryConditions.html">Boundary Conditions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../geometry/EB.html">Geometry treatment in PeleC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../LES.html">LES and Hybrid LES/DNS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../VandV.html">Correctness - Verification and Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PelePhysics.html">PelePhysics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscellaneous/miscellaneous.html">Miscellaneous Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boxlib_bits.html">Development Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PeleC</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>C10. Hagen–Poiseuille flow</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/ebverification/C10/README.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="c10-hagenpoiseuille-flow">
+<h1>C10. Hagen–Poiseuille flow<a class="headerlink" href="#c10-hagenpoiseuille-flow" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="case-description">
+<h2>Case description<a class="headerlink" href="#case-description" title="Permalink to this headline">¶</a></h2>
+<p>This is the standard Hagen–Poiseuille flow. The geometry is a
+<span class="math notranslate nohighlight">\(x\)</span>-direction aligned circular channel with imposed pressure
+boundary conditions at the inflow and the outflow to enforce a driving
+pressure gradient <span class="math notranslate nohighlight">\(dp /dx\)</span>. For this case, the Mach number is
+set to 0.1, the Reynolds number to 100, and the Prandtl number to
+0.71. The background pressure is atmospheric and the background
+temperature is 300K. The cylinder radius, <span class="math notranslate nohighlight">\(R\)</span>, is 1cm and the
+cylinder length, <span class="math notranslate nohighlight">\(L\)</span>, is 12cm. The simulations are performed for
+5 flowthroughs, at which point in time quantities such as kinetic
+energy and momentum are converged.</p>
+<p>The exact solution at steady state is</p>
+<div class="math notranslate nohighlight">
+\[u(r) = \frac{G}{4 \mu} (R^2 - r^2)\]</div>
+<p>where <span class="math notranslate nohighlight">\(G = -dp/dx\)</span>, and <span class="math notranslate nohighlight">\(\mu\)</span> is the dynamic viscosity.</p>
+</div>
+<div class="section" id="velocity-profiles-at-x-6-cm-channel-center">
+<h2>Velocity profiles at <span class="math notranslate nohighlight">\(x=6\)</span> cm (channel center)<a class="headerlink" href="#velocity-profiles-at-x-6-cm-channel-center" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="ebverification/C10/./ebverification/C10/u.png"><img alt="ebverification/C10/./ebverification/C10/u.png" src="ebverification/C10/./ebverification/C10/u.png" style="height: 300pt;" /></a>
+</div>
+<div class="section" id="l-2-error-norm-of-velocity">
+<h2><span class="math notranslate nohighlight">\(L_2\)</span> error norm of velocity<a class="headerlink" href="#l-2-error-norm-of-velocity" title="Permalink to this headline">¶</a></h2>
+<p>The <span class="math notranslate nohighlight">\(L_2\)</span> error norm for a quantity <span class="math notranslate nohighlight">\(s\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[\epsilon = \sqrt{ \frac{\int_{-r}^{r} (s^h-s^*)^2 \mathrm{d}r}{2 n_r}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(s^h\)</span> is the numerical solution, <span class="math notranslate nohighlight">\(s^*\)</span> is the exact
+solution, and <span class="math notranslate nohighlight">\(n_r\)</span> is the number of cells per radius.</p>
+<a class="reference internal image-reference" href="ebverification/C10/./ebverification/C10/error.png"><img alt="ebverification/C10/./ebverification/C10/error.png" src="ebverification/C10/./ebverification/C10/error.png" style="height: 300pt;" /></a>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The exact solution centerline velocity is adjusted by 0.7% to
+account for compressibility effects. The observance of second order
+behavior is attributed to the fact that this is a diffusion
+dominated problem and diffusion treatment at EB surfaces is second
+order.</p>
+</div>
+</div>
+<div class="section" id="time-convergence-of-kinetic-energy">
+<h2>Time convergence of kinetic energy<a class="headerlink" href="#time-convergence-of-kinetic-energy" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="ebverification/C10/./ebverification/C10/ke_history.png"><img alt="ebverification/C10/./ebverification/C10/ke_history.png" src="ebverification/C10/./ebverification/C10/ke_history.png" style="height: 300pt;" /></a>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This figure shows that the compressible solution reached a steady
+state. It is not expected that the total integration of the kinetic
+energy in the domain match the incompressible value for integrated
+kinetic energy <span class="math notranslate nohighlight">\(K_e\)</span> because of compressibility effects.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright AMReX Copyright (c) 2017, The Regents of the University of California, through Lawrence Berkeley National Laboratory and the Alliance for Sustainable Energy, LLC., through National Renewable Energy Laboratory (subject to receipt of any required approvals from the U.S. Dept. of Energy).  All rights reserved.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
